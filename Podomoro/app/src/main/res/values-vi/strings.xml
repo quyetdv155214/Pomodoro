@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Podomoro</string>
+    <string name="pass">Mat khau</string>
+    <string name="user">ten dang nhap</string>
+</resources>
