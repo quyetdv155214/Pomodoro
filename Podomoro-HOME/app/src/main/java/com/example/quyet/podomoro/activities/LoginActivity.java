@@ -40,7 +40,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void registerAction() {
-        
+
+        String username = etUsername.getText().toString();
+        String password = etPassword.getText().toString();
+        if (username.equals("admin"))   {
+            Toast.makeText(this, "username already exist, chosse other !", Toast.LENGTH_SHORT).show();
+        }
+        else if(username.equals("") || username == null){
+            Toast.makeText(this, "username cannot be null", Toast.LENGTH_SHORT).show();
+        }else if(password.equals("") || password == null)
+        {
+            Toast.makeText(this, "enter password", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "register success !", Toast.LENGTH_SHORT).show();
+        }
+
+
 
     }
 
@@ -54,6 +69,8 @@ public class LoginActivity extends AppCompatActivity {
         }else{
             Toast.makeText(this, "Wrong Username or password", Toast.LENGTH_SHORT).show();
         }
+
+
 
     }
 }

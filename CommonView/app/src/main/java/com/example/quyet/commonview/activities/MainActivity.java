@@ -1,7 +1,10 @@
 package com.example.quyet.commonview.activities;
 
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -15,7 +18,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quyet.commonview.R;
@@ -31,15 +36,20 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton rd_male;
     private RadioButton rd_female;
     private RadioButton rd_undefined;
-    private RatingBar rtb;
-
+    private RatingBar rtb_simple;
+    private SeekBar sb_simple;
+    private TextView tv_seekbar_progress;
+    private SearchView sv_simple;
+    private ProgressBar pb_simple;
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getReferences();
         setupUI();
         addListener();
+        et_simple.clearFocus();
     }
 
     private void getReferences() {
@@ -50,9 +60,12 @@ public class MainActivity extends AppCompatActivity {
         chb_fa = (CheckBox) findViewById(R.id.chb_fa);
         rd_male = (RadioButton) findViewById(R.id.rd_male);
         rd_female = (RadioButton) findViewById(R.id.rd_female);
-        rd_undefined = (RadioButton) findViewById(R.id.rd_undefined );
-    rtb = (RatingBar) findViewById(R.id.rtb);
-
+        rd_undefined = (RadioButton) findViewById(R.id.rd_undefined);
+        rtb_simple = (RatingBar) findViewById(R.id.rtb_simple);
+        sb_simple = (SeekBar) findViewById(R.id.sb_simple);
+        tv_seekbar_progress = (TextView) findViewById(R.id.tv_seekbar_progress);
+        sv_simple = (SearchView) findViewById(R.id.sv_simple);
+        pb_simple = (ProgressBar) findViewById(R.id.pb_simple);
     }
 
     private void setupUI() {
@@ -118,17 +131,59 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, String.format("check box fa :  %s", chb_fa.isChecked()));
             }
         });
+        sb_simple.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                Log.d(TAG, String.format("seekbar onProgress : %s %s", i , b));
+                tv_seekbar_progress.setText(String.format("%s/%s",  i, sb_simple.getMax()));
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                Log.d(TAG, "onStart Tracking Touch");
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Log.d(TAG, String.format("onStop Tracking Touch", seekBar.getProgress()));
+                tv_seekbar_progress.setText(String.format("%s/%s",  sb_simple.getProgress(), sb_simple.getMax()));
+            }
+        });
+
+        sv_simple.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d(TAG, String.format("onQueryTextChange %s ", newText));
+                return false;
+            }
+        });
         btn_test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //read checkbox status
+
                 Log.d(TAG, String.format("%s , %s", chb_fa.getId(), chb_fa.isChecked()));
                 //
                 chb_fa.setChecked(!chb_fa.isChecked());
 
-                Toast.makeText(MainActivity.this, String.format("you are %s ", rd_male.isChecked() ? "male": rd_female.isChecked() ? "female": "undefined"), Toast.LENGTH_SHORT).show();
-                Toast.makeText(MainActivity.this, String.format("rating is %s ", rtb.getRating()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, String.format("you are %s ", rd_male.isChecked() ? "male" : rd_female.isChecked() ? "female" : "undefined"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, String.format("rating is %s ", rtb_simple.getRating()), Toast.LENGTH_SHORT).show();
+                // seekbar read
+                Log.d(TAG, String.format("seekbar : ", sb_simple.getProgress()));
+                sb_simple.setProgress(sb_simple.getProgress() + 10);
 
+                sv_simple.clearFocus();
+                sv_simple.setQuery("", false);
+                sv_simple.setIconified(true);
+                pb_simple.setProgress(pb_simple.getProgress()  + 10);
             }
         });
     }

@@ -7,8 +7,8 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_task">TaskActivity</string>
-    <string name="user">user</string>
-    <string name="pass">pass</string>
+    <string name="username">user</string>
+    <string name="password">pass</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
 </resources>
