@@ -9,7 +9,6 @@
     tools:context="com.example.quyet.podomoro.activities.LoginActivity">
     <EditText
         android:id="@+id/et_username"
-
         android:hint="@string/user"
         android:textSize="14sp"
         android:layout_width="match_parent"
