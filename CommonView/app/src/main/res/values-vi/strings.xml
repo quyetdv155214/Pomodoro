@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">Common View</string>
-    <string name="female">Nữ</string>
-    <string name="male">Nam</string>
-    <string name="undefined">Không xác định</string>
-</resources>
