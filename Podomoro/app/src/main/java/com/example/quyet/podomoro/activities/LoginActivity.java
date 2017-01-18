@@ -12,8 +12,20 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.quyet.podomoro.R;
+import com.example.quyet.podomoro.networks.jsonmodel.LoginBodyJson;
+import com.example.quyet.podomoro.networks.jsonmodel.LoginResponseJson;
+import com.example.quyet.podomoro.networks.services.LoginService;
 import com.example.quyet.podomoro.settings.LoginCredentials;
 import com.example.quyet.podomoro.settings.Sharepref;
+import com.google.gson.Gson;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -22,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etPassword;
     private Button btLogin;
     private Button btRegister;
+    private Retrofit retrofit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +58,49 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         Sharepref.init(this);
-        skipLoginIfPosible();
+//        skipLoginIfPosible();
         Sharepref.getInstance().put(new LoginCredentials("hieu", "xxx"));
         Log.d(TAG, String.format("onCreate: %s", Sharepref.getInstance().getLoginCredentials().toString()));
+// retrofit
+
+    }
+    private void onLoginSuccess(){
+
+    }
+    private void sendLogin(String username, String password)
+    {
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://a-task.herokuapp.com/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        LoginService loginService = retrofit.create(LoginService.class);
+        //data & format
+        //format --> mediatype
+        //date --. json
+
+        MediaType jsonType = MediaType.parse("application/json");
+        String loginJson = (new Gson().toJson(new LoginBodyJson(username, password)));
+        final RequestBody loginBody= RequestBody.create(jsonType, loginJson);
+        loginService.login(loginBody).enqueue(new Callback<LoginResponseJson>() {
+            @Override
+            public void onResponse(Call<LoginResponseJson> call, Response<LoginResponseJson> response) {
+                LoginResponseJson loginResponseJson = response.body();
+                if(loginResponseJson != null){
+
+                }else{
+
+                }
+                Log.d(TAG, "onResponse: ");
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponseJson> call, Throwable t) {
+                Log.d(TAG, "onFailure: ");
+            }
+        });
     }
 
-    private void registerAction() {
-    }
+
 
     private void skipLoginIfPosible() {
         if (Sharepref.getInstance().getLoginCredentials() != null){
@@ -84,13 +133,14 @@ public class LoginActivity extends AppCompatActivity {
     private void attemptLogin() {
         String username = etUsername.getText().toString();
         String password = etPassword.getText().toString();
-        if (username.equals("admin") && password.equals("admin")) {
+//        if (username.equals("admin") && password.equals("admin")) {
             //notification
+        sendLogin(username, password);
           gotoTaskActivity();
 
-        } else {
-            Toast.makeText(this, "Wrong Username or password", Toast.LENGTH_SHORT).show();
-        }
+//        } else {
+//            Toast.makeText(this, "Wrong Username or password", Toast.LENGTH_SHORT).show();
+//        }
 
     }
     private void gotoTaskActivity(){
