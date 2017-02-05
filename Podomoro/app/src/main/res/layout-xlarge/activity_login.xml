@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+
                 android:id="@+id/et_username"
                 android:hint="@string/username"
                 android:textSize="16sp"
@@ -53,25 +54,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <Button
-                android:id="@+id/bt_register"
-                android:text="@string/register"
                 android:layout_marginTop="@dimen/bt_margin_top"
-                android:layout_marginBottom="@dimen/bt_margin_bottom"
+                android:layout_marginBottom="@dimen/bt_margin_top"
                 android:layout_marginLeft="@dimen/bt_margin_left"
                 android:layout_marginRight="@dimen/bt_margin_left"
-                android:background="@color/colorTransparent"
-                android:textColor="@color/colorAccent"
+                android:id="@+id/bt_register"
+                android:text="@string/register"
                 android:layout_width="wrap_content"
+                android:background="@drawable/shape_button"
                 android:layout_height="@dimen/btHeight" />
             <Button
-                android:id="@+id/bt_login"
-                android:text="@string/login"
                 android:layout_marginTop="@dimen/bt_margin_top"
-                android:layout_marginBottom="@dimen/bt_margin_bottom"
-                android:textColor="@color/colorWhite"
+                android:layout_marginBottom="@dimen/bt_margin_top"
+                android:id="@+id/bt_login"
                 android:layout_marginLeft="@dimen/bt_margin_left"
                 android:layout_marginRight="@dimen/bt_margin_left"
                 android:background="@drawable/shape_button"
+                android:text="@string/login"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/btHeight" />
 
@@ -87,9 +86,7 @@
             android:src="@drawable/techkids_logo_cropped"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:scaleType="fitCenter"
-            android:layout_marginBottom="8dp" />
-
+            android:id="@+id/imageView2" />
     </RelativeLayout>
 
 

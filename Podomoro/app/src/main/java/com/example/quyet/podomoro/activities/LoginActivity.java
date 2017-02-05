@@ -6,9 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quyet.podomoro.R;
@@ -35,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btLogin;
     private Button btRegister;
     private Retrofit retrofit;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +60,18 @@ public class LoginActivity extends AppCompatActivity {
                 registerAction();
             }
         });
-
+        etPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if(i == EditorInfo.IME_ACTION_DONE){
+                    attemptLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
         Sharepref.init(this);
-//        skipLoginIfPosible();
-        Sharepref.getInstance().put(new LoginCredentials("hieu", "xxx"));
+        skipLoginIfPosible();
         Log.d(TAG, String.format("onCreate: %s", Sharepref.getInstance().getLoginCredentials().toString()));
 // retrofit
 
@@ -69,10 +81,12 @@ public class LoginActivity extends AppCompatActivity {
     }
     private void sendLogin(String username, String password)
     {
+        //1. create service
         retrofit = new Retrofit.Builder()
                 .baseUrl("http://a-task.herokuapp.com/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        // 2. create service
         LoginService loginService = retrofit.create(LoginService.class);
         //data & format
         //format --> mediatype
@@ -81,14 +95,20 @@ public class LoginActivity extends AppCompatActivity {
         MediaType jsonType = MediaType.parse("application/json");
         String loginJson = (new Gson().toJson(new LoginBodyJson(username, password)));
         final RequestBody loginBody= RequestBody.create(jsonType, loginJson);
-        loginService.login(loginBody).enqueue(new Callback<LoginResponseJson>() {
+
+
+        // 3 . create call
+        Call<LoginResponseJson> loginCall = loginService.login(loginBody);
+
+
+        loginCall.enqueue(new Callback<LoginResponseJson>() {
             @Override
             public void onResponse(Call<LoginResponseJson> call, Response<LoginResponseJson> response) {
                 LoginResponseJson loginResponseJson = response.body();
                 if(loginResponseJson != null){
 
                 }else{
-
+                    token = loginResponseJson.getAcsesstoken();
                 }
                 Log.d(TAG, "onResponse: ");
             }
@@ -103,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void skipLoginIfPosible() {
-        if (Sharepref.getInstance().getLoginCredentials() != null){
+        if (Sharepref.getInstance().getLoginCredentials().getAccessToken() != null){
             gotoTaskActivity();
         }
 
@@ -133,14 +153,10 @@ public class LoginActivity extends AppCompatActivity {
     private void attemptLogin() {
         String username = etUsername.getText().toString();
         String password = etPassword.getText().toString();
-//        if (username.equals("admin") && password.equals("admin")) {
-            //notification
-        sendLogin(username, password);
-          gotoTaskActivity();
 
-//        } else {
-//            Toast.makeText(this, "Wrong Username or password", Toast.LENGTH_SHORT).show();
-//        }
+        sendLogin(username, password);
+//          gotoTaskActivity();
+
 
     }
     private void gotoTaskActivity(){

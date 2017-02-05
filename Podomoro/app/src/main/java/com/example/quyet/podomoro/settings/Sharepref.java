@@ -44,5 +44,8 @@ public class Sharepref {
         return  loginCredentials;
     }
 
+    public  String getAccessToken(){
+        return (getLoginCredentials() != null) ? getLoginCredentials().getAccessToken() : null;
+    }
 
 }
