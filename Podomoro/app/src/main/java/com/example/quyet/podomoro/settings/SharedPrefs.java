@@ -9,19 +9,19 @@ import com.google.gson.Gson;
  * Created by quyet on 1/14/2017.
  */
 
-public class Sharepref {
+public class SharedPrefs {
     private static final String SHARED_PREFS_NAME = "SP";
     private static final String LOGIN_KEY = "login";
     private SharedPreferences sharedPreferences;
     Gson gson ;
-    private static Sharepref instance;
-    public static Sharepref getInstance() {
+    private static SharedPrefs instance;
+    public static SharedPrefs getInstance() {
         return instance;
     }
     public static  void init(Context context){
-        instance  = new Sharepref(context);
+        instance  = new SharedPrefs(context);
     }
-    private Sharepref(Context context) {
+    private SharedPrefs(Context context) {
         this.sharedPreferences = context.getSharedPreferences(
                 SHARED_PREFS_NAME,
                 Context.MODE_PRIVATE
@@ -44,8 +44,5 @@ public class Sharepref {
         return  loginCredentials;
     }
 
-    public  String getAccessToken(){
-        return (getLoginCredentials() != null) ? getLoginCredentials().getAccessToken() : null;
-    }
 
 }
