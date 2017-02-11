@@ -12,6 +12,8 @@ import com.google.gson.Gson;
 public class SharedPrefs {
     private static final String SHARED_PREFS_NAME = "SP";
     private static final String LOGIN_KEY = "login";
+
+    private static final String SETTING_KEY = "SETTING";
     private SharedPreferences sharedPreferences;
     Gson gson ;
     private static SharedPrefs instance;
@@ -42,6 +44,21 @@ public class SharedPrefs {
         LoginCredentials loginCredentials  = gson.fromJson(loginJson, LoginCredentials.class);
 
         return  loginCredentials;
+    }
+    public void putSetting(Setting setting) {
+
+        String loginJson = gson.toJson(setting);
+        sharedPreferences.edit().putString(SETTING_KEY, loginJson).commit();
+    }
+
+    public Setting getSetting() {
+        String settingJson = sharedPreferences.getString(SETTING_KEY, null);
+        if (settingJson == null) {
+            return null;
+        }
+        Setting setting = gson.fromJson(settingJson, Setting.class);
+
+        return setting;
     }
 
 

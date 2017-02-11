@@ -1,16 +1,23 @@
 package com.example.quyet.podomoro.activities;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.quyet.podomoro.R;
+import com.example.quyet.podomoro.adapters.ColorTableAdapter;
 import com.example.quyet.podomoro.networks.jsonmodel.LoginBodyJson;
 import com.example.quyet.podomoro.networks.jsonmodel.LoginResponseJson;
 import com.example.quyet.podomoro.networks.jsonmodel.RegisterBodyJson;
@@ -19,7 +26,11 @@ import com.example.quyet.podomoro.networks.services.LoginService;
 import com.example.quyet.podomoro.networks.services.RegisterService;
 import com.example.quyet.podomoro.settings.LoginCredentials;
 import com.example.quyet.podomoro.settings.SharedPrefs;
+import com.example.quyet.podomoro.ultil.Cons;
 import com.google.gson.Gson;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,10 +45,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = LoginActivity.class.toString();
-    @BindView(R.id.et_username )EditText etUsername;
-    @BindView(R.id.et_password ) EditText etPassword;
-    @BindView(R.id.bt_login ) Button btLogin;
-    @BindView(R.id.bt_register ) Button btRegister;
+    ProgressDialog myDialog;
+    @BindView(R.id.et_username)
+    EditText etUsername;
+    @BindView(R.id.et_password)
+    EditText etPassword;
+    @BindView(R.id.bt_login)
+    Button btLogin;
+    @BindView(R.id.bt_register)
+    Button btRegister;
+    @BindView(R.id.textInputUsername)
+    TextInputLayout textInputUsername;
+    @BindView(R.id.textInputPassword)
+    TextInputLayout textInputPassword;
+    @BindView(R.id.iv_techkid)
+    ImageView iv_techkid;
     private Retrofit retrofit;
     private String username;
     private String password;
@@ -51,7 +73,23 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         addListener();
+        setupUI();
         SharedPrefs.init(this);
+        etUsername.requestFocus();
+        
+
+    }
+
+    private void setupUI() {
+        myDialog =new ProgressDialog(this);
+        myDialog.setMessage("Loading...");
+        myDialog.setCancelable(false);
+        myDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
 
     }
 
@@ -63,16 +101,56 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         btRegister.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 registerAction();
+            }
+        });
+        etUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                username = etUsername.getText().toString();
+                if(checkUsername())
+                {
+                    textInputUsername.setError(null);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        etPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                password = etPassword.getText().toString();
+                if (checkPassword()){
+                    textInputPassword.setError(null);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
     }
 
 
     /**
-     *
      * @param username
      * @param password
      */
@@ -91,31 +169,24 @@ public class LoginActivity extends AppCompatActivity {
 
         final RequestBody registerBody = RequestBody.create(jsonType, registerJson);
         // Create Call
-        Call<RegisterResponseJson> regisCall =registerService.register(registerBody);
+        Call<RegisterResponseJson> regisCall = registerService.register(registerBody);
 
         regisCall.enqueue(new Callback<RegisterResponseJson>() {
             @Override
             public void onResponse(Call<RegisterResponseJson> call, Response<RegisterResponseJson> response) {
-
-//                Toast.makeText(LoginActivity.this, String.format("onResponse code : %s, message : %s",
-//                        response.code(), response.message()), Toast.LENGTH_LONG).show();
-                RegisterResponseJson registerResponseJson = response.body();
-                if (response.code() == 200) {
-                    Toast.makeText(LoginActivity.this, "Registed", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, String.format(String.format("onResponse,  register success " +
-                            "\n token %s", registerResponseJson.getAccessToken())));
-
+                myDialog.dismiss();
+                if (response.code() == 200){
+                    Toast.makeText(LoginActivity.this, Cons.REGISTER_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
                 }
                 if (response.code() == 400) {
-                    Log.d(TAG, String.format(String.format("onResponse,  register fail, username " +
-                            "already used , code %s", response.code())));
-                    Toast.makeText(LoginActivity.this, "register fail, username " +
-                            "                            already used ", Toast.LENGTH_SHORT).show();
+                    textInputUsername.setError(Cons.REGISTER_ACCOUNT_USED_MESS_SHORT);
+                    Toast.makeText(LoginActivity.this, Cons.REGISTER_ACCOUNT_USED_MESS_LONG, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<RegisterResponseJson> call, Throwable t) {
+                myDialog.dismiss();
                 Toast.makeText(LoginActivity.this, String.format("onFailure cause : %s, message : %s",
                         t.getCause(), t.getMessage()), Toast.LENGTH_LONG).show();
                 Log.d(TAG, String.format(String.format("onFailure,  register fail " +
@@ -123,11 +194,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
     private void onLoginSuccess() {
         // put login
         SharedPrefs.getInstance().put(new LoginCredentials(username, password, token));
         //
-        Toast.makeText(this, "Logged in", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, Cons.LOGIN_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
         //
         gotoTaskActivity();
     }
@@ -151,25 +223,29 @@ public class LoginActivity extends AppCompatActivity {
         Call<LoginResponseJson> loginCall = loginService.login(loginBody);
 
 
-
         loginCall.enqueue(new Callback<LoginResponseJson>() {
             @Override
             public void onResponse(Call<LoginResponseJson> call, Response<LoginResponseJson> response) {
+
+                myDialog.dismiss();
                 LoginResponseJson loginResponseJson = response.body();
                 if (loginResponseJson != null) {
                     if (response.code() == 200) {
                         token = loginResponseJson.getAccessToken();
+                        Toast.makeText(LoginActivity.this,Cons.LOGIN_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
+
                         onLoginSuccess();
                     }
                 } else {
                     Log.d(TAG, "onResponse: Could not parse body");
-                    Toast.makeText(LoginActivity.this, "Username or password wrong ! ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this,Cons.LOGIN_WRONG_ACCOUNT_MESS, Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<LoginResponseJson> call, Throwable t) {
+                myDialog.dismiss();
                 Log.d(TAG, String.format("onFailure: %s", t));
             }
         });
@@ -185,17 +261,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void registerAction() {
-
         username = etUsername.getText().toString();
         password = etPassword.getText().toString();
 
-
-        if (username.equals("") || username == null) {
-            Toast.makeText(this, "username cannot be null", Toast.LENGTH_SHORT).show();
-        } else if (password.equals("") || password == null) {
-            Toast.makeText(this, "enter password", Toast.LENGTH_SHORT).show();
-        } else {
+        if (checkUsername() & checkPassword()) {
+            myDialog.show();
             sendRegister(username, password);
+
         }
 
 
@@ -204,9 +276,49 @@ public class LoginActivity extends AppCompatActivity {
     private void attemptLogin() {
         username = etUsername.getText().toString();
         password = etPassword.getText().toString();
-        sendLogin(username, password);
+        if (checkUsername() & checkPassword()) {
+            myDialog.show();
+            sendLogin(username, password);
+
+        } else {
+
+        }
+    }
+
+    private boolean checkPassword() {
+        // TODO: 2/11/2017 Check general password
+        if (password.isEmpty()) {
+            textInputPassword.setError(Cons.PASS_EMPTY_ERROR);
+            return false;
+        }
+        if (password.length() < Cons.LENGTH_OF_PASSwOED) {
+            textInputPassword.setError(Cons.PASS_TOO_SHORT_ERROR);
+            return false;
+        }
+        return true;
 
     }
+    private boolean checkUsername() {
+        // check general username
+        if (username.isEmpty()) {
+            textInputUsername.setError(Cons.USERNAME_EMPTY_ERROR);
+            return false;
+        }
+        if (username.length() < Cons.LENGTH_OF_USERNAME) {
+            textInputUsername.setError(Cons.USERNAME_TOO_SHORT_ERROR);
+            return false;
+        }
+        Pattern p = Pattern.compile(Cons.USERNAME_REGEX);
+        Matcher m = p.matcher(username);
+        // boolean b = m.matches();
+        if (m.find()) {
+            textInputUsername.setError(Cons.HAVE_SPECIAL_CHARACTER_ERROR);
+            return false;
+        }
+
+        return true;
+    }
+
 
     private void gotoTaskActivity() {
         Toast.makeText(this, "logged in", Toast.LENGTH_SHORT).show();

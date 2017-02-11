@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_login"
@@ -15,6 +17,7 @@
         android:layout_centerVertical="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <EditText
             android:id="@+id/et_password"
             android:inputType="textPassword"
@@ -48,7 +51,6 @@
         android:layout_height="0dp"/>
 
     <Button
-
         android:layout_below="@id/textInputPassword"
         android:id="@+id/bt_register"
         android:text="@string/register"
@@ -79,6 +81,7 @@
         android:layout_width="@dimen/btWidth"
         android:layout_height="@dimen/btHeight" />
     <ImageView
+        android:id="@+id/iv_techkid"
         app:srcCompat="@drawable/ic_techkidslogo"
         android:layout_above="@id/textInputUsername"
         android:layout_margin="16dp"

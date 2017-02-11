@@ -13,5 +13,7 @@
     <dimen name="btWidth">120dp</dimen>
     <dimen name="list_item_height">64dp</dimen>
     <dimen name="view_inter_space">16dp</dimen>
+    <dimen name="margin_start">16dp</dimen>
+    <dimen name="margin_end">16dp</dimen>
 
 </resources>

@@ -11,7 +11,12 @@
     <string name="password">Password</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
-
+    <string name="title_activity_setting">SettingActivity</string>
+    <string name="work_time">Work time:</string>
+    <string name="break_time">Break time :</string>
+    <string name="long_break">Long break:</string>
+    <string name="long_break_affter">Long break affter</string>
+    <string name="reset">Reset</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
