@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         setupUI();
         SharedPrefs.init(this);
         etUsername.requestFocus();
-        
+        skipLoginIfPosible();
 
     }
 
@@ -205,7 +205,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void sendLogin(String username, String password) {
+    private void sendLogin(final String username, final String password) {
         retrofit = new Retrofit.Builder()
                 .baseUrl("http://a-task.herokuapp.com/api/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -232,6 +232,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginResponseJson != null) {
                     if (response.code() == 200) {
                         token = loginResponseJson.getAccessToken();
+                        SharedPrefs.getInstance().put(new LoginCredentials(username,password, token));
                         Toast.makeText(LoginActivity.this,Cons.LOGIN_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
 
                         onLoginSuccess();
