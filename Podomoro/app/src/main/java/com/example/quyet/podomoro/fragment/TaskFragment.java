@@ -27,7 +27,7 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TaskFragment extends Fragment {
+public class TaskFragment extends Fragment implements FragmentListener {
 
 
     @BindView(R.id.rv_task)
@@ -66,9 +66,12 @@ public class TaskFragment extends Fragment {
     @OnClick(R.id.fab)
     void onFabClick(){
         TaskDetailFragment taskDetailFragment = new TaskDetailFragment();
-        ((TaskActivity)(getActivity())).changFragment(taskDetailFragment, true);
+        replaceFragment(taskDetailFragment, true);
         // // TODO: 2/11/2017  
     }
-
-
+    @Override
+    public void replaceFragment(Fragment fragment, boolean addToBackStack) {
+        ManagerFragment mf  = new ManagerFragment(this.getActivity().getSupportFragmentManager(), R.id.fl_main);
+        mf.replaceFragment(fragment, true);
+    }
 }

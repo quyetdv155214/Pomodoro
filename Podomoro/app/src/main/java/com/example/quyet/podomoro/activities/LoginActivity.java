@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.quyet.podomoro.R;
-import com.example.quyet.podomoro.adapters.ColorTableAdapter;
 import com.example.quyet.podomoro.networks.jsonmodel.LoginBodyJson;
 import com.example.quyet.podomoro.networks.jsonmodel.LoginResponseJson;
 import com.example.quyet.podomoro.networks.jsonmodel.RegisterBodyJson;
@@ -71,12 +70,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
         addListener();
         setupUI();
         SharedPrefs.init(this);
         etUsername.requestFocus();
-        skipLoginIfPosible();
+
+//        skipLoginIfPossible();
+//
 
     }
 
@@ -255,7 +255,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      *
      */
-    private void skipLoginIfPosible() {
+    private void skipLoginIfPossible() {
         if (SharedPrefs.getInstance().getLoginCredentials().getAccessToken() != null) {
             gotoTaskActivity();
         }

@@ -17,13 +17,15 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.quyet.podomoro.R;
+import com.example.quyet.podomoro.fragment.FragmentListener;
+import com.example.quyet.podomoro.fragment.ManagerFragment;
 import com.example.quyet.podomoro.fragment.TaskFragment;
 
 import butterknife.BindDrawable;
 import butterknife.ButterKnife;
 
 public class TaskActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener , FragmentListener{
 
     private static final String TAG = "task activity";
     ActionBarDrawerToggle toggle;
@@ -77,7 +79,7 @@ public class TaskActivity extends AppCompatActivity
             }
         });
         TaskFragment taskFragment = new TaskFragment();
-        changFragment(taskFragment, false);
+        replaceFragment(taskFragment, false);
 
     }
 
@@ -162,16 +164,7 @@ public class TaskActivity extends AppCompatActivity
 
 
     public void changFragment(Fragment frag, boolean addToBackStack) {
-//        FragmentManager fragmentManager =
-//                this.getSupportFragmentManager();
-//
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.fl_main, frag);
-//        fragmentTransaction.addToBackStack(
-//                null
-//        );
-//        fragmentTransaction.commit();
-        //rut gon
+
         if (addToBackStack)
             getSupportFragmentManager()
                     .beginTransaction()
@@ -184,5 +177,10 @@ public class TaskActivity extends AppCompatActivity
                     .replace(R.id.fl_main, frag)
                     .commit();
         }
+    }
+
+    @Override
+    public void replaceFragment(Fragment fragment, boolean addToBackStack) {
+        new ManagerFragment(getSupportFragmentManager(),R.id.fl_main).replaceFragment(fragment,addToBackStack);
     }
 }

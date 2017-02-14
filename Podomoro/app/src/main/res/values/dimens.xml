@@ -15,5 +15,6 @@
     <dimen name="view_inter_space">16dp</dimen>
     <dimen name="margin_start">16dp</dimen>
     <dimen name="margin_end">16dp</dimen>
+    <dimen name="textInputMargin">16dp</dimen>
 
 </resources>

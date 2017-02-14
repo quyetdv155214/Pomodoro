@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 
 public class SharedPrefs {
     private static final String SHARED_PREFS_NAME = "SP";
-    private static final String LOGIN_KEY = "login";
+    private static final String LOGIN_KEY = "LOGIN";
 
     private static final String SETTING_KEY = "SETTING";
     private SharedPreferences sharedPreferences;

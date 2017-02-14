@@ -5,9 +5,50 @@
     tools:context="com.example.quyet.podomoro.fragment.TaskDetailFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_margin="@dimen/textInputMargin"
+            android:id="@+id/textInputName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/et_name"
+                android:inputType="textPassword"
+                android:imeOptions="actionDone"
+                android:textSize="16sp"
+                android:hint="@string/text_input_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_margin="@dimen/textInputMargin"
+            android:id="@+id/textInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/et_payment"
+                android:hint="@string/payment_per_secs"
+                android:textSize="16sp"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:id="@+id/rv_colors"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            >
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
 
 </FrameLayout>
