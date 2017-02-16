@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPrefs.init(this);
         etUsername.requestFocus();
 
-//        skipLoginIfPossible();
+        skipLoginIfPossible();
 //
 
     }

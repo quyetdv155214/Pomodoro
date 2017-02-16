@@ -16,5 +16,6 @@
     <dimen name="margin_start">16dp</dimen>
     <dimen name="margin_end">16dp</dimen>
     <dimen name="textInputMargin">16dp</dimen>
+    <dimen name="task_color_size">48dp</dimen>
 
 </resources>

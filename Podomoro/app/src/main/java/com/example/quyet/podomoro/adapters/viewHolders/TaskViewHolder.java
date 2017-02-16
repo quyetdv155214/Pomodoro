@@ -50,7 +50,6 @@ public class TaskViewHolder extends RecyclerView.ViewHolder{
         gradientDrawable.setColor(Color.parseColor(task.getColor()));
         // 2 : bind name
          tv_task_name.setText(task.getName());
-
     }
 
 

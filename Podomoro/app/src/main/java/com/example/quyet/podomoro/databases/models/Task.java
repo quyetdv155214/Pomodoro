@@ -7,7 +7,7 @@ package com.example.quyet.podomoro.databases.models;
 public class Task {
     private String name;
     private String color;
-
+    private double payment_per_hour;
 
     public String getName() {
         return name;
@@ -31,11 +31,25 @@ public class Task {
 
     }
 
+    public Task(String name, String color, double payment_per_hour) {
+        this.name = name;
+        this.color = color;
+        this.payment_per_hour = payment_per_hour;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
                 "color='" + color + '\'' +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    public double getPayment_per_hour() {
+        return payment_per_hour;
+    }
+
+    public void setPayment_per_hour(float payment_per_hour) {
+        this.payment_per_hour = payment_per_hour;
     }
 }

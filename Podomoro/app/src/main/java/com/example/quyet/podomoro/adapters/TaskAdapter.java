@@ -15,6 +15,15 @@ import com.example.quyet.podomoro.databases.models.Task;
  */
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
+    public interface TaskItemClickListener{
+        void onItemClick(Task task);
+    }
+    private TaskItemClickListener taskItemClickListener;
+
+    public void setTaskItemClickListener(TaskItemClickListener taskItemClickListener) {
+        this.taskItemClickListener = taskItemClickListener;
+    }
+
     @Override
     public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // 1 : create view
@@ -32,9 +41,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     @Override
     public void onBindViewHolder(TaskViewHolder holder, int position) {
         //1 : get data based on positon
-        Task task = DBContext.instance.allTask().get(position);
+        final Task task = DBContext.instance.allTask().get(position);
         //2 : bind data into view
         holder.bind(task);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //send event to outside
+            if (taskItemClickListener != null){
+                taskItemClickListener.onItemClick(task);
+            }
+
+            }
+        });
     }
     // lay so luong
     @Override

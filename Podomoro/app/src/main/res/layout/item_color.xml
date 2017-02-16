@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_margin="16dp"
-    android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
     <View
         android:id="@+id/v_color"
-        android:background="@drawable/shape_task_color"
-         android:layout_width="40dp"
-        android:layout_height="40dp" />
-    <android.support.v7.widget.AppCompatCheckBox
-        android:id="@+id/cb_color"
-        android:theme="@style/checkBoxStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        />
+        android:layout_width="@dimen/task_color_size"
+        android:layout_height="@dimen/task_color_size"
+        android:background="@drawable/shape_task_color" />
+    <ImageView
+        android:id="@+id/iv_check"
+        android:visibility="invisible"
+        android:background="@drawable/ic_done_white_24px"
+        android:layout_width="@dimen/task_color_size"
+        android:layout_height="@dimen/task_color_size" />
+
+
 </RelativeLayout>

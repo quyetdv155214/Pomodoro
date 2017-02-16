@@ -15,6 +15,11 @@ public class Color {
         return color;
     }
 
+
+    public Color(String color, boolean checked){
+        this.color = color;
+        this.checked =checked;
+    }
     public Color( String color) {
         this.color = color;
         this.checked = false;
@@ -28,4 +33,20 @@ public class Color {
                 ", checked=" + checked +
                 '}';
     }
+    public static String[] COLORS = new String[]{
+            "#4A148C",
+            "#E040FB",
+            "#D500F9",
+            "#2196F3",
+            "#3F51B5",
+            "#009688",
+            "#0277BD",
+            "#00897B",
+            "#1DE9B6",
+            "#D4E157",
+            "#76FF03",
+            "#69F0AE",
+            "#F9A825",
+            "#616161"
+    };
 }

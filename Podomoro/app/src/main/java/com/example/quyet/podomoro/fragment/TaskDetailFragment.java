@@ -3,8 +3,6 @@ package com.example.quyet.podomoro.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +16,10 @@ import android.widget.Toast;
 
 import com.example.quyet.podomoro.R;
 import com.example.quyet.podomoro.activities.TaskActivity;
-import com.example.quyet.podomoro.adapters.ColorTableAdapter;
+import com.example.quyet.podomoro.adapters.TaskColorAdapter;
+import com.example.quyet.podomoro.databases.DBContext;
+import com.example.quyet.podomoro.databases.models.Task;
+import com.example.quyet.podomoro.decoration.TaskColorDecor;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,13 +31,26 @@ public class TaskDetailFragment extends Fragment implements FragmentListener{
 
     @BindView(R.id.rv_colors)
     RecyclerView rv_colors;
+
+    @BindView(R.id.et_name)
+    EditText et_name;
     @BindView(R.id.et_payment)
     EditText payment;
+    TaskColorAdapter colorAdapter;
+    private String title;
+    private Task task;
     public TaskDetailFragment() {
         // Required empty public constructor
         setHasOptionsMenu(true);
     }
 
+    public void setTask(Task task) {
+        this.task = task;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,10 +64,29 @@ public class TaskDetailFragment extends Fragment implements FragmentListener{
 
     private void setupUI(View view) {
         ButterKnife.bind(this,view);
-        ColorTableAdapter colorAdapter = new ColorTableAdapter();
-        rv_colors.setAdapter(colorAdapter);
+
+        //set layout managet
         rv_colors.setLayoutManager(new GridLayoutManager(this.getContext(),4));
-        payment.setText("0.0");
+        // setAdapter
+        colorAdapter= new TaskColorAdapter();
+        rv_colors.setAdapter(colorAdapter);
+        // add decoration
+        rv_colors.addItemDecoration(new TaskColorDecor());
+        //
+
+        // set title
+        if(getActivity() instanceof  TaskActivity){
+           ((TaskActivity) getActivity()).getSupportActionBar().setTitle(title);
+        }
+        if (task != null){
+            et_name.setText(task.getName());
+            payment.setText(String.format("%.1f", task.getPayment_per_hour()));
+            colorAdapter.setSelectedColor(task.getColor());
+        }
+
+
+    }
+    private  void addListener(){
         payment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -62,9 +95,10 @@ public class TaskDetailFragment extends Fragment implements FragmentListener{
                 }
             }
         });
-        AppCompatActivity activity =  (AppCompatActivity) getActivity();
-        activity.getSupportActionBar().setTitle("Create new task");
+
     }
+
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -73,12 +107,24 @@ public class TaskDetailFragment extends Fragment implements FragmentListener{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Toast.makeText(this.getContext(), "Save", Toast.LENGTH_SHORT).show();
-        TaskFragment taskFragment = new TaskFragment();
-        // // TODO: 2/14/2017 pop back stack  
-//        replaceFragment(taskFragment, false);
+        if (item.getItemId() == R.id.menu_item)
+        {
+            if(true){
+                Toast.makeText(this.getContext(), "Save", Toast.LENGTH_SHORT).show();
+                //1 : get data from UI
+                String taskName = et_name.getText().toString();
+                double paymentPerHour = Float.parseFloat(payment.getText().toString());
+                String color = colorAdapter.getSelectedColor();
 
-        return true;
+                // 2 : Create new Task
+                Task newTask = new Task(taskName, color, paymentPerHour);
+                // 3 : add to database
+                DBContext.instance.addTask(newTask);
+            }
+
+        }
+        getActivity().onBackPressed();
+        return false;
     }
 
     @Override
@@ -87,4 +133,6 @@ public class TaskDetailFragment extends Fragment implements FragmentListener{
                     .replaceFragment(fragment,addToBackStack);
 
     }
+
+
 }

@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 
 import com.example.quyet.podomoro.R;
 
@@ -16,8 +17,8 @@ import butterknife.ButterKnife;
  */
 
 public class ColorTableViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    @BindView(R.id.cb_color)
-    CheckBox cb_color;
+    @BindView(R.id.iv_check)
+    ImageView iv_check;
     @BindView(R.id.v_color)
     View v_color;
 
@@ -31,10 +32,13 @@ public class ColorTableViewHolder extends RecyclerView.ViewHolder implements Vie
     }
     @Override
     public void onClick(View view) {
-        if (cb_color.isChecked()){
-            cb_color.setChecked(false);
+
+    }
+    public  void setCheck(boolean check){
+        if (check){
+            iv_check.setVisibility(View.VISIBLE);
         }else{
-            cb_color.setChecked(true);
+            iv_check.setVisibility(View.INVISIBLE);
         }
     }
 }
