@@ -1,7 +1,6 @@
 package com.example.quyet.podomoro.activities;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -17,15 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.quyet.podomoro.R;
-import com.example.quyet.podomoro.fragment.FragmentListener;
-import com.example.quyet.podomoro.fragment.ManagerFragment;
 import com.example.quyet.podomoro.fragment.TaskFragment;
+import com.example.quyet.podomoro.fragment.TaskFragmentListener;
 
-import butterknife.BindDrawable;
 import butterknife.ButterKnife;
 
 public class TaskActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener , FragmentListener{
+        implements NavigationView.OnNavigationItemSelectedListener , TaskFragmentListener
+{
 
     private static final String TAG = "task activity";
     ActionBarDrawerToggle toggle;
@@ -78,8 +76,9 @@ public class TaskActivity extends AppCompatActivity
                 }
             }
         });
+        // change fragment
         TaskFragment taskFragment = new TaskFragment();
-        replaceFragment(taskFragment, false);
+        onChangeFragment(taskFragment, false);
 
     }
 
@@ -145,11 +144,8 @@ public class TaskActivity extends AppCompatActivity
 
     private void gotoSettingActivity() {
         try {
-
             Intent intent = new Intent(this, SettingActivity.class);
             this.startActivity(intent);
-
-
         } catch (Exception e) {
 
 
@@ -162,9 +158,8 @@ public class TaskActivity extends AppCompatActivity
         this.startActivity(intent);
     }
 
-
-    public void changFragment(Fragment frag, boolean addToBackStack) {
-
+    @Override
+    public void onChangeFragment(Fragment frag, boolean addToBackStack) {
         if (addToBackStack)
             getSupportFragmentManager()
                     .beginTransaction()
@@ -177,10 +172,5 @@ public class TaskActivity extends AppCompatActivity
                     .replace(R.id.fl_main, frag)
                     .commit();
         }
-    }
-
-    @Override
-    public void replaceFragment(Fragment fragment, boolean addToBackStack) {
-        new ManagerFragment(getSupportFragmentManager(),R.id.fl_main).replaceFragment(fragment,addToBackStack);
     }
 }

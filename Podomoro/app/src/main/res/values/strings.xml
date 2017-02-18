@@ -23,4 +23,5 @@
     <string name="text_input_name">Name</string>
     <string name="payment_per_secs">payment per secs</string>
     <string name="add_new_task">Add new Task</string>
+    <string name="done">Done</string>
 </resources>

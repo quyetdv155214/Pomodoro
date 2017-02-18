@@ -1,0 +1,57 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.quyet.podomoro.fragment.TimerFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:id="@+id/pb_timer"
+            android:layout_centerHorizontal="true"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:max="1000"
+            android:progress="600"
+            android:indeterminate="false"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressDrawable="@drawable/progress_timer"
+            android:background="@drawable/shape_progress_bar_ring"
+            />
+        <TextView
+            android:text="25:00"
+            android:textSize="25sp"
+            android:layout_marginTop="160dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp" />
+        <LinearLayout
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/pb_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:layout_marginEnd="@dimen/button_margin_left"
+                android:background="@drawable/ic_play_circle_outline_black_24px"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+            <Button
+                android:id="@+id/ib_stop"
+                android:text="Stop"
+                android:drawableLeft="@drawable/ic_stop_black_24px"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp" />
+
+        </LinearLayout>
+
+
+
+
+
+    </RelativeLayout>
+
+</FrameLayout>

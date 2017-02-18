@@ -1,10 +1,12 @@
 package com.example.quyet.podomoro.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.quyet.podomoro.R;
@@ -27,11 +30,13 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TaskDetailFragment extends Fragment implements FragmentListener{
+public class TaskDetailFragment extends Fragment {
 
+    private static final String TAG =TaskDetailFragment.class.toString() ;
     @BindView(R.id.rv_colors)
     RecyclerView rv_colors;
-
+    @BindView(R.id.sw_isDone)
+    Switch sw_isDone;
     @BindView(R.id.et_name)
     EditText et_name;
     @BindView(R.id.et_payment)
@@ -43,6 +48,10 @@ public class TaskDetailFragment extends Fragment implements FragmentListener{
         // Required empty public constructor
         setHasOptionsMenu(true);
     }
+
+    TaskFragmentListener taskFragmentListener;
+
+
 
     public void setTask(Task task) {
         this.task = task;
@@ -59,6 +68,7 @@ public class TaskDetailFragment extends Fragment implements FragmentListener{
 
         View view = inflater.inflate(R.layout.fragment_task_detail, container, false);
         setupUI(view);
+        addListener();
         return view;
     }
 
@@ -76,12 +86,19 @@ public class TaskDetailFragment extends Fragment implements FragmentListener{
 
         // set title
         if(getActivity() instanceof  TaskActivity){
-           ((TaskActivity) getActivity()).getSupportActionBar().setTitle(title);
+            ((TaskActivity) getActivity()).getSupportActionBar().setTitle(title);
         }
+
         if (task != null){
             et_name.setText(task.getName());
-            payment.setText(String.format("%.1f", task.getPayment_per_hour()));
+            payment.setText(String.format("%s",task.getPayment_per_hour()));
             colorAdapter.setSelectedColor(task.getColor());
+            if (task.isDone())
+            {
+                sw_isDone.setChecked(true);
+            }else{
+                sw_isDone.setChecked(false);
+            }
         }
 
 
@@ -109,30 +126,37 @@ public class TaskDetailFragment extends Fragment implements FragmentListener{
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_item)
         {
+
+            //1 : get data from UI
+            String taskName = et_name.getText().toString();
+
+            float paymentPerHour = Float.parseFloat(payment.getText().toString());
+            String color = colorAdapter.getSelectedColor();
+            boolean isDone = sw_isDone.isChecked();
+            Task newTask = new Task(taskName, color, paymentPerHour, isDone);
+            ////validate input
             if(true){
                 Toast.makeText(this.getContext(), "Save", Toast.LENGTH_SHORT).show();
-                //1 : get data from UI
-                String taskName = et_name.getText().toString();
-                double paymentPerHour = Float.parseFloat(payment.getText().toString());
-                String color = colorAdapter.getSelectedColor();
 
                 // 2 : Create new Task
-                Task newTask = new Task(taskName, color, paymentPerHour);
-                // 3 : add to database
-                DBContext.instance.addTask(newTask);
-            }
 
+                if (task == null){
+                    // 3 : add to database
+                    DBContext.instance.addTask(newTask);
+                }else{
+                    newTask.setId(task.getId());
+                    DBContext.instance.editTask(newTask);
+                    Log.d(TAG, String.format("onOptionsItemSelected: %s", task.toString()));
+                    Log.d(TAG, String.format("onOptionsItemSelected: %s", newTask.toString()));
+                }
+            }
         }
         getActivity().onBackPressed();
+
         return false;
     }
 
-    @Override
-    public void replaceFragment(Fragment fragment, boolean addToBackStack) {
-            new ManagerFragment(this.getActivity().getSupportFragmentManager(),R.id.fl_main)
-                    .replaceFragment(fragment,addToBackStack);
 
-    }
 
 
 }
