@@ -15,13 +15,16 @@
     <string name="work_time">Work time:</string>
     <string name="break_time">Break time :</string>
     <string name="long_break">Long break:</string>
-    <string name="long_break_affter">Long break affter</string>
+    <string name="long_break_after">Long break after</string>
     <string name="reset">Reset</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ok">OK</string>
-    <string name="text_input_name">Name</string>
-    <string name="payment_per_secs">payment per secs</string>
-    <string name="add_new_task">Add new Task</string>
-    <string name="done">Done</string>
+    <string name="text_input_name">Name of new task</string>
+    <string name="payment_per_secs">Payment per hour</string>
+    <string name="add_new_task">Add new task</string>
+    <string name="done">Task had done</string>
+    <string name="saved">Saved</string>
+    <string name="tasks">Tasks</string>
+    <string name="edit_task">Edit task</string>
 </resources>

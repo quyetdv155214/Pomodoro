@@ -59,7 +59,7 @@ public class TaskFragment extends Fragment {
         rvTask.setAdapter(taskAdapter);
         rvTask.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Task");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.tasks);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL);
         rvTask.addItemDecoration(dividerItemDecoration);
 
@@ -71,7 +71,7 @@ public class TaskFragment extends Fragment {
             public void onItemClick(Task task) {
 //                Log.d(TAG, String.format("onItemClick: %s", task));
                 TaskDetailFragment taskDetailFragment = new TaskDetailFragment();
-                taskDetailFragment.setTitle("Edit");
+                taskDetailFragment.setTitle(getString(R.string.edit_task));
                 taskDetailFragment.setTask(task);
                 // replace fragment
                 taskFragmentListener.onChangeFragment(taskDetailFragment,true);
@@ -94,7 +94,7 @@ public class TaskFragment extends Fragment {
         // replace fragment
         taskFragmentListener.onChangeFragment(taskDetailFragment,true);
         // // TODO: 2/11/2017
-        taskDetailFragment.setTitle("add new Task");
+        taskDetailFragment.setTitle("Add new task");
     }
 
 }

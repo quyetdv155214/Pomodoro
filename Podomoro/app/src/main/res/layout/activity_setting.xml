@@ -79,7 +79,7 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:text="@string/long_break_affter"
+        android:text="@string/long_break_after"
         android:paddingTop="30sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

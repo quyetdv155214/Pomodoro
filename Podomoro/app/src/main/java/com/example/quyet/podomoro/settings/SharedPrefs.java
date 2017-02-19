@@ -16,10 +16,14 @@ public class SharedPrefs {
     private static final String SETTING_KEY = "SETTING";
     private SharedPreferences sharedPreferences;
     Gson gson ;
-    private static SharedPrefs instance;
-    public static SharedPrefs getInstance() {
-        return instance;
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
+
+    public static SharedPrefs instance;
+
     public static  void init(Context context){
         instance  = new SharedPrefs(context);
     }

@@ -136,7 +136,7 @@ public class TaskDetailFragment extends Fragment {
             Task newTask = new Task(taskName, color, paymentPerHour, isDone);
             ////validate input
             if(true){
-                Toast.makeText(this.getContext(), "Save", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.getContext(), R.string.saved, Toast.LENGTH_SHORT).show();
 
                 // 2 : Create new Task
 

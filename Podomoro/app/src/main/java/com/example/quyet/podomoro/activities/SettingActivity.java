@@ -29,7 +29,7 @@ public class SettingActivity extends AppCompatActivity {
     private SeekBar sb_workTime;
     private SeekBar sb_breakTime;
     private SeekBar sb_longBreak;
-    private SharedPrefs sharepref = SharedPrefs.getInstance();
+    private SharedPrefs sharepref ;
     private Spinner spinner;
     private Button bt_reset;
 
@@ -37,9 +37,9 @@ public class SettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-
         getReferences();
         addListener();
+        sharepref = SharedPrefs.instance;
         setupUI();
     }
 

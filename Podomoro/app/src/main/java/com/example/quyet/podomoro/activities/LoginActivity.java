@@ -73,15 +73,14 @@ public class LoginActivity extends AppCompatActivity {
         addListener();
         setupUI();
         SharedPrefs.init(this);
-        etUsername.requestFocus();
-
         skipLoginIfPossible();
+        etUsername.requestFocus();
 //
 
     }
 
     private void setupUI() {
-        myDialog =new ProgressDialog(this);
+        myDialog = new ProgressDialog(this);
         myDialog.setMessage("Loading...");
         myDialog.setCancelable(false);
         myDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
@@ -116,8 +115,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 username = etUsername.getText().toString();
-                if(checkUsername())
-                {
+                if (checkUsername()) {
                     textInputUsername.setError(null);
                 }
             }
@@ -137,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
                 password = etPassword.getText().toString();
-                if (checkPassword()){
+                if (checkPassword()) {
                     textInputPassword.setError(null);
                 }
             }
@@ -175,7 +173,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<RegisterResponseJson> call, Response<RegisterResponseJson> response) {
                 myDialog.dismiss();
-                if (response.code() == 200){
+                if (response.code() == 200) {
                     Toast.makeText(LoginActivity.this, Cons.REGISTER_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
                 }
                 if (response.code() == 400) {
@@ -197,7 +195,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void onLoginSuccess() {
         // put login
-        SharedPrefs.getInstance().put(new LoginCredentials(username, password, token));
+        SharedPrefs.instance.put(new LoginCredentials(username, password, token));
         //
         Toast.makeText(this, Cons.LOGIN_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
         //
@@ -232,14 +230,14 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginResponseJson != null) {
                     if (response.code() == 200) {
                         token = loginResponseJson.getAccessToken();
-                        SharedPrefs.getInstance().put(new LoginCredentials(username,password, token));
-                        Toast.makeText(LoginActivity.this,Cons.LOGIN_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
+                        SharedPrefs.instance.put(new LoginCredentials(username, password, token));
+                        Toast.makeText(LoginActivity.this, Cons.LOGIN_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
 
                         onLoginSuccess();
                     }
                 } else {
                     Log.d(TAG, "onResponse: Could not parse body");
-                    Toast.makeText(LoginActivity.this,Cons.LOGIN_WRONG_ACCOUNT_MESS, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, Cons.LOGIN_WRONG_ACCOUNT_MESS, Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -252,13 +250,17 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     *
-     */
+
     private void skipLoginIfPossible() {
-        if (SharedPrefs.getInstance().getLoginCredentials().getAccessToken() != null) {
-            gotoTaskActivity();
+        SharedPrefs s = SharedPrefs.instance;
+        if (s == null) {
+            Log.d(TAG, "skipLoginIfPossible: instance is null ");
+        } else if (SharedPrefs.instance.getLoginCredentials() != null) {
+            if (SharedPrefs.instance.getLoginCredentials().getAccessToken() != null) {
+                gotoTaskActivity();
+            }
         }
+
     }
 
     private void registerAction() {
@@ -299,6 +301,7 @@ public class LoginActivity extends AppCompatActivity {
         return true;
 
     }
+
     private boolean checkUsername() {
         // check general username
         if (username.isEmpty()) {
