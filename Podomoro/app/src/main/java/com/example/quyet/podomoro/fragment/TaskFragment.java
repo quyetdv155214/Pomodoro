@@ -63,7 +63,6 @@ public class TaskFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL);
         rvTask.addItemDecoration(dividerItemDecoration);
 
-
     }
     public void addListener(){
         taskAdapter.setTaskItemClickListener(new TaskAdapter.TaskItemClickListener() {

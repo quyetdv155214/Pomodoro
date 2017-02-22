@@ -56,7 +56,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     @Override
     public void onBindViewHolder(TaskViewHolder holder, final int position) {
         //1 : get data based on positon
-        final Task task = DBContext.instance.allTask().get(position);
+        final Task task = DBContext.instance.getTasks().get(position);
         //2 : bind data into view
         holder.bind(task);
         holder.getButton().setOnClickListener(new View.OnClickListener() {
@@ -83,6 +83,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     // lay so luong
     @Override
     public int getItemCount() {
-        return DBContext.instance.allTask().size();
+        return DBContext.instance.getTasks().size();
     }
 }

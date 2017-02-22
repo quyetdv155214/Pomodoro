@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.quyet.podomoro.fragment.TaskDetailFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -11,6 +12,7 @@
         android:layout_height="match_parent">
 
         <android.support.design.widget.TextInputLayout
+            app:errorEnabled="true"
             android:layout_margin="@dimen/textInputMargin"
             android:id="@+id/til_name"
             android:layout_width="match_parent"
@@ -25,6 +27,7 @@
                 android:layout_height="wrap_content" />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
+            app:errorEnabled="true"
             android:layout_margin="@dimen/textInputMargin"
             android:id="@+id/til_payment"
             android:layout_below="@id/til_name"

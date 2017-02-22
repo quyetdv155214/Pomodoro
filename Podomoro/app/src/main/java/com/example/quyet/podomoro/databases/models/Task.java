@@ -1,9 +1,5 @@
 package com.example.quyet.podomoro.databases.models;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 /**
  * Created by quyet on 2/8/2017.
  */
@@ -13,7 +9,47 @@ public class Task {
     private String color;
     private double payment_per_hour;
     private boolean isDone;
-    private long id;
+    private String id;
+    private String local_id;
+    private String due_date;
+
+
+    public Task(String name, String color, double payment_per_hour, boolean isDone,String id) {
+        this.name = name;
+        this.color = color;
+        this.payment_per_hour = payment_per_hour;
+        this.isDone = isDone;
+        this.id = id;
+        this.due_date = null;
+        this.local_id  = null;
+
+    }
+
+    public Task(String name, String color, double payment_per_hour, boolean isDone, String id, String local_id, String due_date) {
+        this.name = name;
+        this.color = color;
+        this.payment_per_hour = payment_per_hour;
+        this.isDone = isDone;
+        this.id = id;
+        this.local_id = local_id;
+        this.due_date = due_date;
+    }
+
+    public String getLocal_id() {
+        return local_id;
+    }
+
+    public void setLocal_id(String local_id) {
+        this.local_id = local_id;
+    }
+
+    public String getDue_date() {
+        return due_date;
+    }
+
+    public void setDue_date(String due_date) {
+        this.due_date = due_date;
+    }
 
     public void setPayment_per_hour(double payment_per_hour) {
         this.payment_per_hour = payment_per_hour;
@@ -43,14 +79,6 @@ public class Task {
         return color;
     }
 
-    public Task(String name, String color, double payment_per_hour, boolean isDone) {
-        this.name = name;
-        this.color = color;
-        this.payment_per_hour = payment_per_hour;
-        this.isDone = isDone;
-       this.id = (new Date().getTime()/1000);
-    }
-
 
 
 
@@ -62,11 +90,11 @@ public class Task {
         this.payment_per_hour = payment_per_hour;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -17,19 +17,18 @@ import static android.content.ContentValues.TAG;
 public class DBContext {
 
     public static final DBContext instance = new DBContext();
+    private List<Task> tasks;
 
     private DBContext() {
+        tasks = new ArrayList<>();
     }
 
-    List<Task> tasks;
     public List<Task> allTask() {
-        if (tasks == null) {
-            tasks = new ArrayList<>();
-            tasks.add(new Task("Task 1", "#4A148C",1, false));
 
-        }
+        return tasks;
+    }
 
-
+    public List<Task> getTasks() {
         return tasks;
     }
 
@@ -38,10 +37,6 @@ public class DBContext {
         colors.add(new Color("#4A148C"));
         colors.add(new Color("#E040FB"));
         colors.add(new Color("#D500F9"));
-        colors.add(new Color("#2196F3"));
-        colors.add(new Color("#3F51B5"));
-        colors.add(new Color("#009688"));
-        colors.add(new Color("#0277BD"));
         colors.add(new Color("#00897B"));
         colors.add(new Color("#1DE9B6"));
         colors.add(new Color("#D4E157"));
@@ -53,7 +48,7 @@ public class DBContext {
     }
 
     public void editTask(Task newTask){
-        long id = newTask.getId();
+        String id = newTask.getId();
         for (Task t: tasks
              ) {
             if (t.getId() == id)
@@ -72,5 +67,10 @@ public class DBContext {
 
     public void addTask(Task newTask) {
         tasks.add(newTask);
+        TaskContext.instance.addNewTask(newTask);
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 }

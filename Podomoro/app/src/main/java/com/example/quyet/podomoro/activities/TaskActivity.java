@@ -18,7 +18,9 @@ import android.view.View;
 import com.example.quyet.podomoro.R;
 import com.example.quyet.podomoro.fragment.TaskFragment;
 import com.example.quyet.podomoro.fragment.TaskFragmentListener;
+import com.example.quyet.podomoro.settings.SharedPrefs;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TaskActivity extends AppCompatActivity
@@ -79,7 +81,6 @@ public class TaskActivity extends AppCompatActivity
         // change fragment
         TaskFragment taskFragment = new TaskFragment();
         onChangeFragment(taskFragment, false);
-
     }
 
 

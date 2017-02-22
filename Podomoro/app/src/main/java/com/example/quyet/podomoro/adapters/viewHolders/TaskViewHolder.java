@@ -46,28 +46,34 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
             }
         });
     }
-    public void bind(final Task task){
+
+    public void bind(final Task task) {
 
         // 1 : bind color
 //        v_task_color.setBackgroundColor(Color.parseColor(task.getColor()));
         GradientDrawable gradientDrawable = (GradientDrawable) v_task_color.getBackground();
-        gradientDrawable.setColor(Color.parseColor(task.getColor()));
+        if (task.getColor() != null){
+            gradientDrawable.setColor(Color.parseColor(task.getColor()));
+        }else{
+            gradientDrawable.setColor(Color.parseColor("#ffffff"));
+        }
+
         // 2 : bind name
-         tv_task_name.setText(task.getName());
-        if (task.isDone()){
+        tv_task_name.setText(task.getName());
+        if (task.isDone()) {
 
             iv_task_check.setVisibility(View.VISIBLE);
-        }else{
+        } else {
 
             iv_task_check.setVisibility(View.INVISIBLE);
         }
         v_task_color.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (task.isDone()){
+                if (task.isDone()) {
                     task.setDone(false);
                     iv_task_check.setVisibility(View.INVISIBLE);
-                }else{
+                } else {
                     task.setDone(true);
 
                     iv_task_check.setVisibility(View.VISIBLE);
@@ -76,13 +82,10 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         });
 
     }
-    public ImageButton getButton(){
+
+    public ImageButton getButton() {
         return bt_item_task;
     }
-
-
-    
-    
 
 
 }

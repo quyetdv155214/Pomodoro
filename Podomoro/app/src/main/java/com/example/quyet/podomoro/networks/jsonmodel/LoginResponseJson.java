@@ -10,8 +10,6 @@ public class LoginResponseJson {
     @SerializedName("access_token")
     private String accessToken;
 
-
-
     public String getAccessToken() {
         return accessToken;
     }
