@@ -22,6 +22,7 @@ import com.example.quyet.podomoro.R;
 import com.example.quyet.podomoro.activities.TaskActivity;
 import com.example.quyet.podomoro.adapters.TaskColorAdapter;
 import com.example.quyet.podomoro.databases.DBContext;
+import com.example.quyet.podomoro.databases.TaskContext;
 import com.example.quyet.podomoro.databases.models.Task;
 import com.example.quyet.podomoro.decoration.TaskColorDecor;
 
@@ -154,6 +155,8 @@ public class TaskDetailFragment extends Fragment {
             float paymentPerHour = Float.parseFloat(payment.getText().toString());
             String color = colorAdapter.getSelectedColor();
             boolean isDone = sw_isDone.isChecked();
+            Log.d(TAG, String.format("onOptionsItemSelected: %s", isDone));
+
             Task newTask = new Task(taskName, color, paymentPerHour, isDone, "");
 
             Toast.makeText(this.getContext(), R.string.saved, Toast.LENGTH_SHORT).show();
@@ -165,7 +168,10 @@ public class TaskDetailFragment extends Fragment {
                 DBContext.instance.addTask(newTask);
             } else {
                 newTask.setId(task.getId());
+
                 DBContext.instance.editTask(newTask);
+                TaskContext.instance.editTask(newTask);
+
                 Log.d(TAG, String.format("onOptionsItemSelected: %s", task.toString()));
                 Log.d(TAG, String.format("onOptionsItemSelected: %s", newTask.toString()));
             }

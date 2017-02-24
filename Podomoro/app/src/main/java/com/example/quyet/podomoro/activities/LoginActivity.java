@@ -28,7 +28,7 @@ import com.example.quyet.podomoro.networks.services.LoginService;
 import com.example.quyet.podomoro.networks.services.RegisterService;
 import com.example.quyet.podomoro.settings.LoginCredentials;
 import com.example.quyet.podomoro.settings.SharedPrefs;
-import com.example.quyet.podomoro.ultil.Cons;
+import com.example.quyet.podomoro.ultil.Constant;
 import com.google.gson.Gson;
 
 import java.util.regex.Matcher;
@@ -41,8 +41,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -62,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     TextInputLayout textInputPassword;
     @BindView(R.id.iv_techkid)
     ImageView iv_techkid;
-    private Retrofit retrofit;
+
     private String username;
     private String password;
     private String accessToken;
@@ -76,10 +74,33 @@ public class LoginActivity extends AppCompatActivity {
         addListener();
         setupUI();
         SharedPrefs.init(this);
-        skipLoginIfPossible();
+
         etUsername.requestFocus();
 
     }
+    private void skipLoginIfPossible() {
+
+        if (SharedPrefs.instance.getAccessToken() != null){
+            Log.d(TAG, String.format("accessToken %s", accessToken));
+            TaskContext.instance.getTaskFromServer();
+            gotoTaskActivity();
+        }
+
+    }
+
+    private void onLoginSuccess() {
+        // put login
+        SharedPrefs.instance.put(new LoginCredentials(username, password, accessToken));
+        //
+        Toast.makeText(this, Constant.LOGIN_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
+        //
+        TaskContext.instance.getTaskFromServer();
+
+        gotoTaskActivity();
+    }
+
+
+
 
     private void setupUI() {
         myDialog = new ProgressDialog(this);
@@ -107,7 +128,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         btRegister.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 registerAction();
@@ -159,9 +179,9 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void sendRegister(String username, String password) {
         // create retrofit
-        retrofit = NetContext.instance.retrofit;
+
         // create service
-        RegisterService registerService = retrofit.create(RegisterService.class);
+        RegisterService registerService = NetContext.instance.create(RegisterService.class);
 
         MediaType jsonType = MediaType.parse("application/json");
 
@@ -176,11 +196,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<RegisterResponseJson> call, Response<RegisterResponseJson> response) {
                 myDialog.dismiss();
                 if (response.code() == 200) {
-                    Toast.makeText(LoginActivity.this, Cons.REGISTER_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, Constant.REGISTER_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
                 }
                 if (response.code() == 400) {
-                    textInputUsername.setError(Cons.REGISTER_ACCOUNT_USED_MESS_SHORT);
-                    Toast.makeText(LoginActivity.this, Cons.REGISTER_ACCOUNT_USED_MESS_LONG, Toast.LENGTH_SHORT).show();
+                    textInputUsername.setError(Constant.REGISTER_ACCOUNT_USED_MESS_SHORT);
+                    Toast.makeText(LoginActivity.this, Constant.REGISTER_ACCOUNT_USED_MESS_LONG, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -195,24 +215,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void onLoginSuccess() {
-        // put login
-        SharedPrefs.instance.put(new LoginCredentials(username, password, accessToken));
-        //
-        Toast.makeText(this, Cons.LOGIN_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
-        //
-        TaskContext.instance.getTaskFromServer();
-
-        gotoTaskActivity();
-    }
-
 
 
     private void sendLogin(final String username, final String password) {
 
-        retrofit = NetContext.instance.retrofit;
-        // create service
-        LoginService loginService = retrofit.create(LoginService.class);
+
+        LoginService loginService = NetContext.instance.create(LoginService.class);
         //data & format
         //format --> mediatype
         //date --. json
@@ -236,13 +244,13 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, String.format("onResponse: accessToken %s", accessToken));
 
                         SharedPrefs.instance.put(new LoginCredentials(username, password, accessToken));
-                        Toast.makeText(LoginActivity.this, Cons.LOGIN_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, Constant.LOGIN_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
 
                         onLoginSuccess();
                     }
                 } else {
                     Log.d(TAG, "onResponse: Could not parse body");
-                    Toast.makeText(LoginActivity.this, Cons.LOGIN_WRONG_ACCOUNT_MESS, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, Constant.LOGIN_WRONG_ACCOUNT_MESS, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -254,20 +262,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void skipLoginIfPossible() {
-        SharedPrefs s = SharedPrefs.instance;
-        if (s == null) {
-            Log.d(TAG, "skipLoginIfPossible: instance is null ");
-        } else if (SharedPrefs.instance.getLoginCredentials() != null) {
-            if ((accessToken = SharedPrefs.instance.getLoginCredentials().getAccessToken()) != null) {
-                Log.d(TAG, String.format("accessToken %s", accessToken));
-                TaskContext.instance.getTaskFromServer();
-
-                gotoTaskActivity();
-            }
-        }
-
-    }
 
     private void registerAction() {
         username = etUsername.getText().toString();
@@ -297,11 +291,11 @@ public class LoginActivity extends AppCompatActivity {
     private boolean checkPassword() {
         // TODO: 2/11/2017 Check general password
         if (password.isEmpty()) {
-            textInputPassword.setError(Cons.PASS_EMPTY_ERROR);
+            textInputPassword.setError(Constant.PASS_EMPTY_ERROR);
             return false;
         }
-        if (password.length() < Cons.LENGTH_OF_PASSwOED) {
-            textInputPassword.setError(Cons.PASS_TOO_SHORT_ERROR);
+        if (password.length() < Constant.LENGTH_OF_PASSwOED) {
+            textInputPassword.setError(Constant.PASS_TOO_SHORT_ERROR);
             return false;
         }
         return true;
@@ -311,18 +305,18 @@ public class LoginActivity extends AppCompatActivity {
     private boolean checkUsername() {
         // check general username
         if (username.isEmpty()) {
-            textInputUsername.setError(Cons.USERNAME_EMPTY_ERROR);
+            textInputUsername.setError(Constant.USERNAME_EMPTY_ERROR);
             return false;
         }
-        if (username.length() < Cons.LENGTH_OF_USERNAME) {
-            textInputUsername.setError(Cons.USERNAME_TOO_SHORT_ERROR);
+        if (username.length() < Constant.LENGTH_OF_USERNAME) {
+            textInputUsername.setError(Constant.USERNAME_TOO_SHORT_ERROR);
             return false;
         }
-        Pattern p = Pattern.compile(Cons.USERNAME_REGEX);
+        Pattern p = Pattern.compile(Constant.USERNAME_REGEX);
         Matcher m = p.matcher(username);
         // boolean b = m.matches();
         if (m.find()) {
-            textInputUsername.setError(Cons.HAVE_SPECIAL_CHARACTER_ERROR);
+            textInputUsername.setError(Constant.HAVE_SPECIAL_CHARACTER_ERROR);
             return false;
         }
 

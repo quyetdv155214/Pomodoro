@@ -47,9 +47,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
                 parent,
                 false
         );
-
         // 2 : create View holder
         TaskViewHolder taskViewHolder = new TaskViewHolder(itemView);
+
         return taskViewHolder;
     }
 
@@ -63,7 +63,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: click image button");
-
                 taskTimerClickListener.onTimerClick(task);
             }
         });
@@ -74,7 +73,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
                 if (taskItemClickListener != null) {
                         taskItemClickListener.onItemClick(task);
                 }
-
+                notifyDataSetChanged();
             }
         });
 

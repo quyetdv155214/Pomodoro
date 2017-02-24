@@ -1,12 +1,15 @@
 package com.example.quyet.podomoro.networks.jsonmodel;
 
+import com.example.quyet.podomoro.ultil.Utils;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Until;
 
 /**
  * Created by quyetdv on 2/21/2017.
  */
 
-public class TaskResponeJson {
+public class TaskResponseJson {
+
     @SerializedName("name")
     private String name;
     @SerializedName("color")
@@ -21,8 +24,9 @@ public class TaskResponeJson {
     private String local_id;
     @SerializedName("due_date")
     private String due_date;
+    //
 
-    public TaskResponeJson(String name, String color, double payment_per_hour, boolean isDone, String id, String local_id, String due_date) {
+    public TaskResponseJson(String name, String color, double payment_per_hour, boolean isDone, String id, String local_id, String due_date) {
         this.name = name;
         this.color = color;
         this.payment_per_hour = payment_per_hour;
@@ -32,9 +36,19 @@ public class TaskResponeJson {
         this.due_date = due_date;
     }
 
+    public TaskResponseJson(String name, String color, double payment_per_hour, boolean isDone, String id, String due_date) {
+        this.name = name;
+        this.color = color;
+        this.payment_per_hour = payment_per_hour;
+        this.isDone = isDone;
+        this.id = id;
+        this.due_date = due_date;
+        local_id = Utils.instance.getUUID();
+    }
+
     @Override
     public String toString() {
-        return "TaskResponeJson{" +
+        return "TaskResponseJson{" +
                 "name='" + name + '\'' +
                 ", color='" + color + '\'' +
                 ", payment_per_hour=" + payment_per_hour +

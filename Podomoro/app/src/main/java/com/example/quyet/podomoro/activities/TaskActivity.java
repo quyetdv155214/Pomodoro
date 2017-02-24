@@ -1,5 +1,6 @@
 package com.example.quyet.podomoro.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,13 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.example.quyet.podomoro.R;
+import com.example.quyet.podomoro.databases.TaskContext;
 import com.example.quyet.podomoro.fragment.TaskFragment;
 import com.example.quyet.podomoro.fragment.TaskFragmentListener;
-import com.example.quyet.podomoro.settings.SharedPrefs;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TaskActivity extends AppCompatActivity
@@ -29,7 +27,7 @@ public class TaskActivity extends AppCompatActivity
 
     private static final String TAG = "task activity";
     ActionBarDrawerToggle toggle;
-
+    ProgressDialog myDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,13 +40,6 @@ public class TaskActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
@@ -78,11 +69,25 @@ public class TaskActivity extends AppCompatActivity
                 }
             }
         });
+        setupUI();
         // change fragment
         TaskFragment taskFragment = new TaskFragment();
         onChangeFragment(taskFragment, false);
+//        setupUI();
     }
 
+    public void setupUI(){
+        myDialog = new ProgressDialog(this);
+        myDialog.setMessage("Load Data...");
+        myDialog.setCancelable(false);
+        myDialog.onStart();
+        boolean taskFromServer = TaskContext.instance.getTaskFromServer();
+        if (taskFromServer == true){
+            myDialog.dismiss();
+        }
+
+
+    }
 
     @Override
     public void onBackPressed() {

@@ -16,11 +16,6 @@ public class LoginCredentials {
         this.accessToken = accessToken;
     }
 
-//    public LoginCredentials(String password, String username) {
-//        this.password = password;
-//        this.username = username;
-//    }
-
     public String getAccessToken() {
         return accessToken;
     }

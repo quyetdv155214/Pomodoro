@@ -16,6 +16,7 @@ public class SharedPrefs {
     private static final String SETTING_KEY = "SETTING";
     private SharedPreferences sharedPreferences;
     Gson gson ;
+    private String accessToken;
 
     @Override
     public int hashCode() {
@@ -39,7 +40,8 @@ public class SharedPrefs {
         String loginJson = gson.toJson(loginCredentials);
         sharedPreferences.edit().putString(LOGIN_KEY, loginJson).commit();
     }
-    public LoginCredentials getLoginCredentials(){
+
+    private LoginCredentials getLoginCredentials(){
         String loginJson = sharedPreferences.getString(LOGIN_KEY, null);
         if (loginJson == null)
         {
@@ -66,4 +68,11 @@ public class SharedPrefs {
     }
 
 
+    public String getAccessToken() {
+        if (getLoginCredentials() != null)
+        {
+            return getLoginCredentials().getAccessToken();
+        }
+        return null;
+    }
 }

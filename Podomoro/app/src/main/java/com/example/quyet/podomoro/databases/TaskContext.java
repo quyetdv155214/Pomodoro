@@ -4,14 +4,10 @@ import android.util.Log;
 
 import com.example.quyet.podomoro.databases.models.Task;
 import com.example.quyet.podomoro.networks.NetContext;
-import com.example.quyet.podomoro.networks.jsonmodel.TaskResponeJson;
-import com.example.quyet.podomoro.networks.services.AddNewTaskService;
-import com.example.quyet.podomoro.networks.services.GetTasksService;
-import com.example.quyet.podomoro.settings.SharedPrefs;
-
+import com.example.quyet.podomoro.networks.jsonmodel.TaskResponseJson;
+import com.example.quyet.podomoro.networks.services.TaskService;
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,66 +19,95 @@ import static android.content.ContentValues.TAG;
  */
 
 public class TaskContext {
+    private TaskService taskService = NetContext.instance.create(TaskService.class);
 
     public  static  final TaskContext instance = new TaskContext();
 
     private TaskContext() {
     }
-    public  void getTaskFromServer() {
-        GetTasksService getTasksService = NetContext.instance.retrofit.create(GetTasksService.class);
-        final String token = "JWT " + SharedPrefs.instance.getLoginCredentials().getAccessToken();
-
-        getTasksService.getTasks(token).enqueue(new Callback<List<TaskResponeJson>>() {
+    public  boolean getTaskFromServer() {
+        // // TODO: 2/23/2017 new Solution (use static header )
+//        TaskService taskService = NetContext.instance.create(TaskService.class);
+        taskService.getTasks().enqueue(new Callback<List<TaskResponseJson>>() {
             @Override
-            public void onResponse(Call<List<TaskResponeJson>> call, Response<List<TaskResponeJson>> response) {
+            public void onResponse(Call<List<TaskResponseJson>> call, Response<List<TaskResponseJson>> response) {
                 List<Task> tasks = new ArrayList<>();
                 Log.d(TAG, "onResponse: "+ response.code());
                 if (response.body() != null){
-                    for (TaskResponeJson t :
+                    for (TaskResponseJson t :
                             response.body()) {
 //                        if (t.getName()!= null)
-                     tasks.add(new Task(
-                             t.getName(),
-                             t.getColor(),
-                             t.getPayment_per_hour(),
-                             t.isDone(),
-                             t.getId()
-                     ));
-
+                        tasks.add(new Task(
+                                t.getName(),
+                                t.getColor(),
+                                t.getPayment_per_hour(),
+                                t.isDone(),
+                                t.getId()
+                        ));
                     }
+
                     DBContext.instance.setTasks(tasks);
                 }
             }
+
             @Override
-            public void onFailure(Call<List<TaskResponeJson>> call, Throwable t) {
+            public void onFailure(Call<List<TaskResponseJson>> call, Throwable t) {
                 Log.d(TAG, String.format("onFailure: f %s", t.getCause().toString()) );
             }
         });
+        return true;
     }
-    public void addNewTask(Task newTask){
-        AddNewTaskService addNewTaskService = NetContext.instance.retrofit.create(AddNewTaskService.class);
 
-        String token= "JWT "+ SharedPrefs.instance.getLoginCredentials().getAccessToken();
-        // public TaskResponeJson(String name, String color, double payment_per_hour, boolean isDone, String id, String local_id, String due_date)
-        TaskResponeJson newTaskResponeJson = new TaskResponeJson(
+    public void addNewTask(Task newTask){
+        TaskResponseJson newTaskResponseJson = new TaskResponseJson(
                 newTask.getName(),
                 newTask.getColor(),
                 newTask.getPayment_per_hour(),
                 newTask.isDone(),
                 newTask.getId(),
-                newTask.getLocal_id(),
                 newTask.getDue_date()
         );
-        addNewTaskService.addNewTask("application/json",token,newTaskResponeJson).enqueue(new Callback<TaskResponeJson>() {
+        Log.d(TAG, "addNewTask: " + newTask.isDone());
+        // // TODO: 2/23/2017 new Solution (use static header )
+        taskService.addNewTask(newTaskResponseJson).enqueue(new Callback<TaskResponseJson>() {
             @Override
-            public void onResponse(Call<TaskResponeJson> call, Response<TaskResponeJson> response) {
+            public void onResponse(Call<TaskResponseJson> call, Response<TaskResponseJson> response) {
                 Log.d(TAG, String.format("addNewTask: %s %s",response.code(), response.body().toString()));
+            }
+            @Override
+            public void onFailure(Call<TaskResponseJson> call, Throwable t) {
+                Log.d(TAG, String.format("onFailure: %s", t.getCause().toString()));
+
+            }
+        });
+
+    }
+    public void editTask(Task editedTask){
+        String localId = editedTask.getLocal_id();
+//        TaskService taskService = NetContext.instance.create(TaskService.class);
+        TaskResponseJson editedTaskResponse = new TaskResponseJson(
+                editedTask.getName(),
+                editedTask.getColor(),
+                editedTask.getPayment_per_hour(),
+                editedTask.isDone(),
+                editedTask.getId(),
+                editedTask.getDue_date()
+        );
+        taskService.editTask(localId,editedTaskResponse).enqueue(new Callback<TaskResponseJson>() {
+            @Override
+            public void onResponse(Call<TaskResponseJson> call, Response<TaskResponseJson> response) {
+                if (response.body() != null)
+                Log.d(TAG, "onResponse : Edited task code" + response.code());
+                else{
+                    Log.d(TAG, "onResponse: edit fail ; code " + response.code());
+                }
             }
 
             @Override
-            public void onFailure(Call<TaskResponeJson> call, Throwable t) {
-                Log.d(TAG, String.format("onFailure: %s", t.getCause().toString()));
+            public void onFailure(Call<TaskResponseJson> call, Throwable t) {
+                Log.d(TAG, "edit fail ; " + t.getCause().getMessage());
             }
         });
+
     }
 }

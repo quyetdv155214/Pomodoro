@@ -4,7 +4,7 @@ package com.example.quyet.podomoro.ultil;
  * Created by quyet on 2/11/2017.
  */
 
-public class Cons {
+public class Constant {
     public static final int LENGTH_OF_USERNAME = 4;
     public static final int LENGTH_OF_PASSwOED = 4;
     public static final String USERNAME_REGEX = "[^_A-Za-z0-9]";
