@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (SharedPrefs.instance.getAccessToken() != null) {
             Log.d(TAG, String.format("accessToken %s", accessToken));
-            TaskContext.instance.getTaskFromServer();
+//            TaskContext.instance.getTaskFromServer();
             gotoTaskActivity();
         }
 
@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
         //
         Toast.makeText(this, Constant.LOGIN_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
         //
-        TaskContext.instance.getTaskFromServer();
+//        TaskContext.instance.getTaskFromServer();
 
         gotoTaskActivity();
     }

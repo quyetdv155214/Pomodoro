@@ -34,7 +34,7 @@ public class TaskContext {
             @Override
             public void onResponse(Call<List<TaskResponseJson>> call, Response<List<TaskResponseJson>> response) {
                 List<Task> tasks = new ArrayList<>();
-                Log.d(TAG, "onResponse: "+ response.code());
+                Log.d(TAG, "onResponse: get All Task"+ response.code());
                 if (response.body() != null){
                     for (TaskResponseJson t :
                             response.body()) {
@@ -56,7 +56,7 @@ public class TaskContext {
 
             @Override
             public void onFailure(Call<List<TaskResponseJson>> call, Throwable t) {
-                Log.d(TAG, String.format("onFailure: f %s", t.getCause().toString()) );
+                Log.d(TAG, String.format("onFailure: get all task %s", t.getCause().toString()) );
             }
         });
         return true;
@@ -81,7 +81,7 @@ public class TaskContext {
             }
             @Override
             public void onFailure(Call<TaskResponseJson> call, Throwable t) {
-                Log.d(TAG, String.format("onFailure: %s", t.getCause().toString()));
+                Log.d(TAG, String.format("onFailure: add new task%s", t.getCause().toString()));
 
             }
         });
@@ -117,15 +117,16 @@ public class TaskContext {
     }
     public void deleteTask(Task taskDelete){
         String localID = taskDelete.getLocal_id();
+        Log.d(TAG, "deleteTask: in function");
         taskService.deleteTask(localID).enqueue(new Callback<DeleteResponseJSon>() {
             @Override
             public void onResponse(Call<DeleteResponseJSon> call, Response<DeleteResponseJSon> response) {
+
                 Log.d(TAG, "onResponse: DeleteTask code "+ response.code()  );
             }
-
             @Override
             public void onFailure(Call<DeleteResponseJSon> call, Throwable t) {
-                Log.d(TAG, String.format("onFailure: %s", t.getCause()));
+                Log.d(TAG, String.format("onFailure: delete task%s", t.getCause()));
             }
         });
     }

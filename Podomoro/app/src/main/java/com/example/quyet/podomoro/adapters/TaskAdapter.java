@@ -85,6 +85,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
                 notifyDataSetChanged();
             }
         });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (taskLongClickListener!= null)
+                {
+                    taskLongClickListener.onLongClick(task);
+                    Log.d(TAG, "onLongClick: long click");
+                }
+                return false;
+            }
+        });
 
     }
 
