@@ -43,6 +43,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.design.widget.TextInputLayout>
+    <!--<CheckBox-->
+        <!--android:text="Save password"-->
+        <!--android:id="@+id/cb_save"-->
+        <!--android:layout_below="@id/textInputPassword"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
     <View
         android:id="@+id/tempView"
         android:layout_width="40dp"
@@ -50,36 +56,6 @@
         android:layout_below="@id/textInputPassword"
         android:layout_height="0dp"/>
 
-    <Button
-        android:layout_below="@id/textInputPassword"
-        android:id="@+id/bt_register"
-        android:text="@string/register"
-        android:textSize="14sp"
-        android:layout_toLeftOf="@id/tempView"
-        android:layout_marginTop="@dimen/bt_margin_top"
-        android:layout_marginBottom="@dimen/bt_margin_bottom"
-        android:layout_marginLeft="@dimen/bt_margin_left"
-        android:layout_marginRight="@dimen/bt_margin_left"
-        android:background="@color/colorTransparent"
-        android:textColor="@color/colorAccent"
-        android:layout_width="@dimen/btWidth"
-        android:layout_height="@dimen/btHeight" />
-    <Button
-
-        android:id="@+id/bt_login"
-        android:text="@string/login"
-        android:textSize="14sp"
-        android:layout_toRightOf="@id/tempView"
-        android:layout_below="@id/textInputPassword"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/bt_margin_top"
-        android:layout_marginBottom="@dimen/bt_margin_bottom"
-        android:textColor="@color/colorWhite"
-        android:layout_marginLeft="@dimen/bt_margin_left"
-        android:layout_marginRight="@dimen/bt_margin_left"
-        android:background="@drawable/shape_button"
-        android:layout_width="@dimen/btWidth"
-        android:layout_height="@dimen/btHeight" />
     <ImageView
         android:id="@+id/iv_techkid"
         app:srcCompat="@drawable/ic_techkidslogo"
@@ -89,5 +65,33 @@
         android:layout_height="60dp"
         android:scaleType="fitCenter"
         android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/bt_register"
+        android:text="@string/register"
+        android:textSize="14sp"
+        android:layout_marginLeft="@dimen/bt_margin_left"
+        android:layout_marginRight="@dimen/bt_margin_left"
+        android:background="@color/colorTransparent"
+        android:textColor="@color/colorAccent"
+        android:layout_width="@dimen/btWidth"
+        android:layout_height="@dimen/btHeight"
+        android:layout_alignBaseline="@+id/bt_login"
+        android:layout_alignBottom="@+id/bt_login"
+        android:layout_toStartOf="@+id/tempView" />
+
+    <Button
+
+        android:id="@+id/bt_login"
+        android:text="@string/login"
+        android:textSize="14sp"
+        android:textColor="@color/colorWhite"
+        android:layout_marginLeft="@dimen/bt_margin_left"
+        android:layout_marginRight="@dimen/bt_margin_left"
+        android:background="@drawable/shape_button"
+        android:layout_width="@dimen/btWidth"
+        android:layout_height="@dimen/btHeight"
+        android:layout_below="@+id/textInputPassword"
+        android:layout_toEndOf="@+id/tempView" />
 
 </RelativeLayout>

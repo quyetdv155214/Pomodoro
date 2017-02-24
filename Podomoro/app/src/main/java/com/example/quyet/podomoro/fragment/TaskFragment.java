@@ -65,9 +65,10 @@ public class TaskFragment extends Fragment {
         //
         ButterKnife.bind(this, view);
         //
-        TaskContext.instance.getTaskFromServer();
 
         taskAdapter = new TaskAdapter();
+        TaskContext.instance.getTaskFromServer();
+        taskAdapter.notifyDataSetChanged();
         rvTask.setAdapter(taskAdapter);
         rvTask.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
@@ -75,7 +76,6 @@ public class TaskFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL);
         rvTask.addItemDecoration(dividerItemDecoration);
         taskAdapter.setTaskLongClickListener(new TaskAdapter.TaskLongClickListener() {
-
             @Override
             public void onLongClick(final Task task) {
 

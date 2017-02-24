@@ -14,6 +14,7 @@ public class Setting {
     private int longBreakTime;
     private int longBreakAffter;
 
+
     public Setting(int workTime, int breakTime, int longBreakTime, int longBreakAffter) {
         this.workTime = workTime;
         this.breakTime = breakTime;

@@ -40,8 +40,13 @@ public class SharedPrefs {
         String loginJson = gson.toJson(loginCredentials);
         sharedPreferences.edit().putString(LOGIN_KEY, loginJson).commit();
     }
+    public void putSave(){
 
-    private LoginCredentials getLoginCredentials(){
+    }
+//    public void putUsernamePass(LoginCredentials loginCredentials){
+//        String loginJson  = gson.toJson(loginCredentials);
+//    }
+    public LoginCredentials getLoginCredentials(){
         String loginJson = sharedPreferences.getString(LOGIN_KEY, null);
         if (loginJson == null)
         {

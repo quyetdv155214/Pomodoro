@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -74,19 +75,17 @@ public class LoginActivity extends AppCompatActivity {
         addListener();
         setupUI();
         SharedPrefs.init(this);
-        skipLoginIfPossible();
+//        skipLoginIfPossible();
         etUsername.requestFocus();
 
     }
 
     private void skipLoginIfPossible() {
-
         if (SharedPrefs.instance.getAccessToken() != null) {
             Log.d(TAG, String.format("accessToken %s", accessToken));
-//            TaskContext.instance.getTaskFromServer();
+            TaskContext.instance.getTaskFromServer();
             gotoTaskActivity();
         }
-
     }
 
     private void onLoginSuccess() {
@@ -95,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
         //
         Toast.makeText(this, Constant.LOGIN_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
         //
-//        TaskContext.instance.getTaskFromServer();
+        TaskContext.instance.getTaskFromServer();
 
         gotoTaskActivity();
     }

@@ -133,7 +133,7 @@ public class TaskDetailFragment extends Fragment {
         if (item.getItemId() == R.id.menu_item) {
             View view = this.getActivity().getCurrentFocus();
             if (view != null) {
-                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
             //1 : get data from UI
@@ -195,7 +195,7 @@ public class TaskDetailFragment extends Fragment {
         try {
             float paymentPerHour = Float.parseFloat(payment);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new Exception("Wrong format");
         }
 
