@@ -2,8 +2,10 @@ package com.example.quyet.podomoro.fragment;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,8 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.quyet.podomoro.R;
 import com.example.quyet.podomoro.adapters.TaskAdapter;
+import com.example.quyet.podomoro.databases.DBContext;
+import com.example.quyet.podomoro.databases.TaskContext;
 import com.example.quyet.podomoro.databases.models.Task;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -29,7 +32,7 @@ public class TaskFragment extends Fragment {
     RecyclerView rvTask;
     private TaskAdapter taskAdapter;
 
-    public static TaskFragment instance = new TaskFragment();
+//    public static TaskFragment instance = new TaskFragment();
     public TaskFragment() {
         // Required empty public constructor
     }
@@ -62,7 +65,35 @@ public class TaskFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.tasks);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL);
         rvTask.addItemDecoration(dividerItemDecoration);
+        taskAdapter.setTaskLongClickListener(new TaskAdapter.TaskLongClickListener() {
 
+            @Override
+            public void onLongClick(final Task task) {
+                final AlertDialog.Builder del  = new AlertDialog.Builder(TaskFragment.this.getContext());
+                del.setTitle(R.string.delete);
+                del.setMessage(R.string.del_this_task);
+                del.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DBContext.instance.deleteTask(task);
+                        TaskContext.instance.deleteTask(task);
+                        taskAdapter.notifyDataSetChanged();
+                        dialog.cancel();
+                    }
+                });
+                del.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+            }
+        });
+
+    }
+    public void refresh(){
+        taskAdapter.notifyDataSetChanged();
     }
     public void addListener(){
         taskAdapter.setTaskItemClickListener(new TaskAdapter.TaskItemClickListener() {
@@ -71,6 +102,8 @@ public class TaskFragment extends Fragment {
 //                Log.d(TAG, String.format("onItemClick: %s", task));
                 TaskDetailFragment taskDetailFragment = new TaskDetailFragment();
                 taskDetailFragment.setTitle(getString(R.string.edit_task));
+                //
+//                Log.d(TAG, String.format("onItemClick: taskClicked %s ", task.toString()));
                 taskDetailFragment.setTask(task);
                 // replace fragment
                 taskFragmentListener.onChangeFragment(taskDetailFragment,true);
@@ -84,9 +117,7 @@ public class TaskFragment extends Fragment {
                 taskFragmentListener.onChangeFragment(timerFragment, true);
             }
         });
-
     }
-
     @OnClick(R.id.fab)
     void onFabClick(){
         TaskDetailFragment taskDetailFragment = new TaskDetailFragment();

@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 public class TaskActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener , TaskFragmentListener
 {
-
+    static TaskFragment taskFragment;
     private static final String TAG = "task activity";
     ActionBarDrawerToggle toggle;
     ProgressDialog myDialog;
@@ -71,9 +71,12 @@ public class TaskActivity extends AppCompatActivity
         });
         setupUI();
         // change fragment
-        TaskFragment taskFragment = new TaskFragment();
+         taskFragment = new TaskFragment();
         onChangeFragment(taskFragment, false);
 //        setupUI();
+    }
+    public static TaskFragment getTaskFragment(){
+        return taskFragment;
     }
 
     public void setupUI(){

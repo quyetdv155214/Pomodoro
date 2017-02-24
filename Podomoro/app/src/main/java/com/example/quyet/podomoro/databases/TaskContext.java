@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.quyet.podomoro.databases.models.Task;
 import com.example.quyet.podomoro.networks.NetContext;
+import com.example.quyet.podomoro.networks.jsonmodel.DeleteResponseJSon;
 import com.example.quyet.podomoro.networks.jsonmodel.TaskResponseJson;
 import com.example.quyet.podomoro.networks.services.TaskService;
 import java.util.ArrayList;
@@ -12,13 +13,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.content.ContentValues.TAG;
+
 
 /**
  * Created by quyetdv on 2/21/2017.
  */
 
 public class TaskContext {
+    public static  final String TAG = "TaskContext";
     private TaskService taskService = NetContext.instance.create(TaskService.class);
 
     public  static  final TaskContext instance = new TaskContext();
@@ -42,7 +44,9 @@ public class TaskContext {
                                 t.getColor(),
                                 t.getPayment_per_hour(),
                                 t.isDone(),
-                                t.getId()
+                                t.getId(),
+                                t.getLocal_id(),
+                                t.getDue_date()
                         ));
                     }
 
@@ -65,6 +69,7 @@ public class TaskContext {
                 newTask.getPayment_per_hour(),
                 newTask.isDone(),
                 newTask.getId(),
+                newTask.getLocal_id(),
                 newTask.getDue_date()
         );
         Log.d(TAG, "addNewTask: " + newTask.isDone());
@@ -93,6 +98,7 @@ public class TaskContext {
                 editedTask.getId(),
                 editedTask.getDue_date()
         );
+//        Log.d(TAG, String.format("editTask: edit task localid %s ", localId));
         taskService.editTask(localId,editedTaskResponse).enqueue(new Callback<TaskResponseJson>() {
             @Override
             public void onResponse(Call<TaskResponseJson> call, Response<TaskResponseJson> response) {
@@ -102,12 +108,25 @@ public class TaskContext {
                     Log.d(TAG, "onResponse: edit fail ; code " + response.code());
                 }
             }
-
             @Override
             public void onFailure(Call<TaskResponseJson> call, Throwable t) {
-                Log.d(TAG, "edit fail ; " + t.getCause().getMessage());
+                Log.d(TAG, "edit fail ; " + t.getCause());
             }
         });
 
+    }
+    public void deleteTask(Task taskDelete){
+        String localID = taskDelete.getLocal_id();
+        taskService.deleteTask(localID).enqueue(new Callback<DeleteResponseJSon>() {
+            @Override
+            public void onResponse(Call<DeleteResponseJSon> call, Response<DeleteResponseJSon> response) {
+                Log.d(TAG, "onResponse: DeleteTask code "+ response.code()  );
+            }
+
+            @Override
+            public void onFailure(Call<DeleteResponseJSon> call, Throwable t) {
+                Log.d(TAG, String.format("onFailure: %s", t.getCause()));
+            }
+        });
     }
 }

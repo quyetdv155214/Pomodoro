@@ -27,4 +27,8 @@
     <string name="saved">Saved</string>
     <string name="tasks">Tasks</string>
     <string name="edit_task">Edit task</string>
+    <string name="del_this_task">Delete this task !</string>
+    <string name="delete">Delete</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

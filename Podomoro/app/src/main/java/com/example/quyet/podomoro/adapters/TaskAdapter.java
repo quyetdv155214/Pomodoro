@@ -26,9 +26,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     public interface TaskTimerClickListener {
         void onTimerClick(Task t);
     }
+    public interface TaskLongClickListener{
+        void onLongClick(Task task);
+    }
 
     private TaskItemClickListener taskItemClickListener;
     private TaskTimerClickListener taskTimerClickListener;
+    private TaskLongClickListener taskLongClickListener;
+
+
+    public void setTaskLongClickListener(TaskLongClickListener taskLongClickListener) {
+        this.taskLongClickListener = taskLongClickListener;
+    }
 
     public void setTaskItemClickListener(TaskItemClickListener taskItemClickListener) {
         this.taskItemClickListener = taskItemClickListener;

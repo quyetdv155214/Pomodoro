@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.quyet.podomoro.R;
 import com.example.quyet.podomoro.activities.TaskActivity;
+import com.example.quyet.podomoro.adapters.TaskAdapter;
 import com.example.quyet.podomoro.adapters.TaskColorAdapter;
 import com.example.quyet.podomoro.databases.DBContext;
 import com.example.quyet.podomoro.databases.TaskContext;
@@ -157,28 +158,26 @@ public class TaskDetailFragment extends Fragment {
             boolean isDone = sw_isDone.isChecked();
             Log.d(TAG, String.format("onOptionsItemSelected: %s", isDone));
 
-            Task newTask = new Task(taskName, color, paymentPerHour, isDone, "");
 
             Toast.makeText(this.getContext(), R.string.saved, Toast.LENGTH_SHORT).show();
 
             // 2 : Create new Task
+            Task newTask = new Task(taskName, color, paymentPerHour, isDone, "", "");
 
             if (task == null) {
                 // 3 : add to database
                 DBContext.instance.addTask(newTask);
-            } else {
-                newTask.setId(task.getId());
+                TaskContext.instance.addNewTask(newTask);
 
+            } else {
+                newTask.setLocal_id(task.getLocal_id());
+                newTask.setId(task.getId());
                 DBContext.instance.editTask(newTask);
                 TaskContext.instance.editTask(newTask);
-
-                Log.d(TAG, String.format("onOptionsItemSelected: %s", task.toString()));
-                Log.d(TAG, String.format("onOptionsItemSelected: %s", newTask.toString()));
             }
         }
 
         getActivity().onBackPressed();
-
         return false;
     }
 

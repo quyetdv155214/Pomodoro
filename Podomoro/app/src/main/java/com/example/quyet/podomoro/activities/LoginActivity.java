@@ -74,13 +74,14 @@ public class LoginActivity extends AppCompatActivity {
         addListener();
         setupUI();
         SharedPrefs.init(this);
-
+        skipLoginIfPossible();
         etUsername.requestFocus();
 
     }
+
     private void skipLoginIfPossible() {
 
-        if (SharedPrefs.instance.getAccessToken() != null){
+        if (SharedPrefs.instance.getAccessToken() != null) {
             Log.d(TAG, String.format("accessToken %s", accessToken));
             TaskContext.instance.getTaskFromServer();
             gotoTaskActivity();
@@ -98,8 +99,6 @@ public class LoginActivity extends AppCompatActivity {
 
         gotoTaskActivity();
     }
-
-
 
 
     private void setupUI() {
@@ -122,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
                 attemptLogin();
 
                 if (view != null) {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
             }
@@ -216,7 +215,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
     private void sendLogin(final String username, final String password) {
 
 
@@ -238,16 +236,16 @@ public class LoginActivity extends AppCompatActivity {
                 myDialog.dismiss();
                 LoginResponseJson loginResponseJson = response.body();
                 if (loginResponseJson != null) {
+
                     if (response.code() == 200) {
                         // put access token
                         accessToken = loginResponseJson.getAccessToken();
-                        Log.d(TAG, String.format("onResponse: accessToken %s", accessToken));
-
+//                        Log.d(TAG, String.format("onResponse: accessToken %s", accessToken));
                         SharedPrefs.instance.put(new LoginCredentials(username, password, accessToken));
                         Toast.makeText(LoginActivity.this, Constant.LOGIN_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
-
                         onLoginSuccess();
                     }
+
                 } else {
                     Log.d(TAG, "onResponse: Could not parse body");
                     Toast.makeText(LoginActivity.this, Constant.LOGIN_WRONG_ACCOUNT_MESS, Toast.LENGTH_SHORT).show();

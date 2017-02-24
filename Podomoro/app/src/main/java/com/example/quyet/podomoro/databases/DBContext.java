@@ -47,16 +47,17 @@ public class DBContext {
         return colors;
     }
 
-    public void editTask(Task newTask){
+    public void editTask(Task newTask) {
         String id = newTask.getId();
-        for (Task t: tasks
-             ) {
-            if (t.getId() == id)
-            {
+        for (Task t : tasks
+                ) {
+            if (t.getId() == id) {
                 t.setName(newTask.getName());
                 t.setColor(newTask.getColor());
                 t.setDone(newTask.isDone());
                 t.setPayment_per_hour(newTask.getPayment_per_hour());
+                t.setLocal_id(newTask.getLocal_id());
+                t.setDue_date(newTask.getDue_date());
                 Log.d(TAG, String.format("onOptionsItemSelected: %s ", t.toString()));
                 break;
             }
@@ -67,7 +68,27 @@ public class DBContext {
 
     public void addTask(Task newTask) {
         tasks.add(newTask);
-        TaskContext.instance.addNewTask(newTask);
+    }
+
+    public boolean deleteTask(Task task) {
+        if (task.getLocal_id() == null)
+        {
+            Log.d(TAG, "deleteTask: this task have null local id");
+            return false;
+        }
+        for (Task t :
+                tasks) {
+            if (t.getLocal_id() != null )
+                if (t.getLocal_id().equals(task.getLocal_id())) {
+                    tasks.remove(t);
+                    return true;
+                }
+            else {
+                    Log.d(TAG, String.format("deleteTask: %s", "local id null"));
+                }
+        }
+
+        return false;
     }
 
     public void setTasks(List<Task> tasks) {
