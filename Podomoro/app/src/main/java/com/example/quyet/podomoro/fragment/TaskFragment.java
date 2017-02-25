@@ -4,6 +4,7 @@ package com.example.quyet.podomoro.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +23,7 @@ import com.example.quyet.podomoro.adapters.TaskAdapter;
 import com.example.quyet.podomoro.databases.DBContext;
 import com.example.quyet.podomoro.databases.TaskContext;
 import com.example.quyet.podomoro.databases.models.Task;
+import com.example.quyet.podomoro.ultil.Constant;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +38,6 @@ public class TaskFragment extends Fragment {
     RecyclerView rvTask;
     private TaskAdapter taskAdapter;
     ProgressDialog myDialog;
-
     //    public static TaskFragment instance = new TaskFragment();
     public TaskFragment() {
         // Required empty public constructor
@@ -65,16 +66,15 @@ public class TaskFragment extends Fragment {
         //
         ButterKnife.bind(this, view);
         //
-
         taskAdapter = new TaskAdapter();
         TaskContext.instance.getTaskFromServer();
-        taskAdapter.notifyDataSetChanged();
+
         rvTask.setAdapter(taskAdapter);
         rvTask.setLayoutManager(new LinearLayoutManager(this.getContext()));
-
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.tasks);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL);
         rvTask.addItemDecoration(dividerItemDecoration);
+        taskAdapter.notifyDataSetChanged();
         taskAdapter.setTaskLongClickListener(new TaskAdapter.TaskLongClickListener() {
             @Override
             public void onLongClick(final Task task) {
@@ -91,7 +91,7 @@ public class TaskFragment extends Fragment {
                         if (task.getLocal_id() != null)
                         TaskContext.instance.deleteTask(task);
                         else{
-                            Toast.makeText(getContext(), "Can't delete this task\nThis task have null local id", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), Constant.EXCEPTION_TASK_HAVE_NULL_LOCAL_ID, Toast.LENGTH_SHORT).show();
                         }
                         taskAdapter.notifyDataSetChanged();
 //                        Log.d(TAG, "onclick yes");
@@ -109,22 +109,18 @@ public class TaskFragment extends Fragment {
 
             }
         });
-
     }
 
-    public void refresh() {
-        taskAdapter.notifyDataSetChanged();
-    }
+
+
 
     public void addListener() {
         taskAdapter.setTaskItemClickListener(new TaskAdapter.TaskItemClickListener() {
             @Override
             public void onItemClick(Task task) {
-//                Log.d(TAG, String.format("onItemClick: %s", task));
                 TaskDetailFragment taskDetailFragment = new TaskDetailFragment();
                 taskDetailFragment.setTitle(getString(R.string.edit_task));
                 //
-//                Log.d(TAG, String.format("onItemClick: taskClicked %s ", task.toString()));
                 taskDetailFragment.setTask(task);
                 // replace fragment
                 taskFragmentListener.onChangeFragment(taskDetailFragment, true);
@@ -146,7 +142,7 @@ public class TaskFragment extends Fragment {
         // replace fragment
         taskFragmentListener.onChangeFragment(taskDetailFragment, true);
         // // TODO: 2/11/2017
-        taskDetailFragment.setTitle("Add new task");
+        taskDetailFragment.setTitle(getString(R.string.add_new_task));
     }
 
 }

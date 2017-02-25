@@ -22,7 +22,6 @@
     <string name="ok">OK</string>
     <string name="text_input_name">Name of new task</string>
     <string name="payment_per_secs">Payment per hour</string>
-    <string name="add_new_task">Add new task</string>
     <string name="done">Task had done</string>
     <string name="saved">Saved</string>
     <string name="tasks">Tasks</string>
@@ -31,4 +30,5 @@
     <string name="delete">Delete</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="add_new_task">Add new task</string>
 </resources>

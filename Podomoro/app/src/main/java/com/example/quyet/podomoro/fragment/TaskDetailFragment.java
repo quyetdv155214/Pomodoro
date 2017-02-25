@@ -1,6 +1,7 @@
 package com.example.quyet.podomoro.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -52,11 +53,11 @@ public class TaskDetailFragment extends Fragment {
     private String title;
     private Task task;
 
+
     public TaskDetailFragment() {
         // Required empty public constructor
         setHasOptionsMenu(true);
     }
-
     TaskFragmentListener taskFragmentListener;
 
 
@@ -79,9 +80,9 @@ public class TaskDetailFragment extends Fragment {
         return view;
     }
 
+
     private void setupUI(View view) {
         ButterKnife.bind(this, view);
-
         //set layout managet
         rv_colors.setLayoutManager(new GridLayoutManager(this.getContext(), 4));
         // setAdapter
@@ -89,13 +90,10 @@ public class TaskDetailFragment extends Fragment {
         rv_colors.setAdapter(colorAdapter);
         // add decoration
         rv_colors.addItemDecoration(new TaskColorDecor());
-        //
-
         // set title
         if (getActivity() instanceof TaskActivity) {
             ((TaskActivity) getActivity()).getSupportActionBar().setTitle(title);
         }
-
         if (task != null) {
             et_name.setText(task.getName());
             payment.setText(String.format("%s", task.getPayment_per_hour()));
@@ -121,8 +119,6 @@ public class TaskDetailFragment extends Fragment {
         });
 
     }
-
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_edit_task, menu);
@@ -132,6 +128,7 @@ public class TaskDetailFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_item) {
             View view = this.getActivity().getCurrentFocus();
+            //
             if (view != null) {
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -157,10 +154,7 @@ public class TaskDetailFragment extends Fragment {
             String color = colorAdapter.getSelectedColor();
             boolean isDone = sw_isDone.isChecked();
             Log.d(TAG, String.format("onOptionsItemSelected: %s", isDone));
-
-
             Toast.makeText(this.getContext(), R.string.saved, Toast.LENGTH_SHORT).show();
-
             // 2 : Create new Task
             Task newTask = new Task(taskName, color, paymentPerHour, isDone, "", "");
 
@@ -174,10 +168,16 @@ public class TaskDetailFragment extends Fragment {
                 newTask.setId(task.getId());
                 DBContext.instance.editTask(newTask);
                 TaskContext.instance.editTask(newTask);
+//                getActivity().onBackPressed();
+
             }
+            getActivity().onBackPressed();
+
         }
 
-        getActivity().onBackPressed();
+//        taskFragmentListener.onChangeFragment(new TaskFragment(), false);
+
+
         return false;
     }
 
@@ -198,8 +198,6 @@ public class TaskDetailFragment extends Fragment {
         } catch (Exception e) {
             throw new Exception("Wrong format");
         }
-
-
     }
 
 

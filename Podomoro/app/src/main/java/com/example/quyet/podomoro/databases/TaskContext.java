@@ -56,7 +56,7 @@ public class TaskContext {
 
             @Override
             public void onFailure(Call<List<TaskResponseJson>> call, Throwable t) {
-                Log.d(TAG, String.format("onFailure: get all task %s", t.getCause().toString()) );
+                Log.d(TAG, String.format("onFailure: get all task %s" ,t.getCause()) );
             }
         });
         return true;

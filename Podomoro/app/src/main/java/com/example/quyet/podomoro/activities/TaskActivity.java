@@ -80,20 +80,22 @@ public class TaskActivity extends AppCompatActivity
     }
 
     public void setupUI(){
-        myDialog = new ProgressDialog(this);
-        myDialog.setMessage("Load Data...");
-        myDialog.setCancelable(false);
-        myDialog.onStart();
-        boolean taskFromServer = TaskContext.instance.getTaskFromServer();
-        if (taskFromServer == true){
-            myDialog.dismiss();
-        }
+//        myDialog = new ProgressDialog(this);
+//        myDialog.setMessage("Load Data...");
+//        myDialog.setCancelable(false);
+//        myDialog.onStart();
+//        boolean taskFromServer = TaskContext.instance.getTaskFromServer();
+//        if (taskFromServer == true){
+//            myDialog.dismiss();
+//        }
 
 
     }
 
     @Override
     public void onBackPressed() {
+        super.onRestart();
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);

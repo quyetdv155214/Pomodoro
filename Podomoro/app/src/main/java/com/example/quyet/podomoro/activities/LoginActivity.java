@@ -80,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
     private void skipLoginIfPossible() {
         if (SharedPrefs.instance.getAccessToken() != null) {
             Log.d(TAG, String.format("accessToken %s", accessToken));
@@ -316,7 +317,6 @@ public class LoginActivity extends AppCompatActivity {
             textInputUsername.setError(Constant.HAVE_SPECIAL_CHARACTER_ERROR);
             return false;
         }
-
         return true;
     }
 
