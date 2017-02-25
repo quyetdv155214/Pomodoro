@@ -117,7 +117,6 @@ public class TaskDetailFragment extends Fragment {
                 }
             }
         });
-
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -135,8 +134,6 @@ public class TaskDetailFragment extends Fragment {
             }
             //1 : get data from UI
             String taskName = et_name.getText().toString();
-
-
             ////validate input
             try {
                 validateTaskName(taskName);
@@ -162,7 +159,6 @@ public class TaskDetailFragment extends Fragment {
                 // 3 : add to database
                 DBContext.instance.addTask(newTask);
                 TaskContext.instance.addNewTask(newTask);
-
             } else {
                 newTask.setLocal_id(task.getLocal_id());
                 newTask.setId(task.getId());
@@ -172,7 +168,6 @@ public class TaskDetailFragment extends Fragment {
 
             }
             getActivity().onBackPressed();
-
         }
 
 //        taskFragmentListener.onChangeFragment(new TaskFragment(), false);

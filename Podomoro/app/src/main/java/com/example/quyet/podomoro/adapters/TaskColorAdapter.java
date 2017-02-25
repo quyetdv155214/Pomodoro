@@ -20,8 +20,6 @@ import static android.content.ContentValues.TAG;
 
 public class TaskColorAdapter extends RecyclerView.Adapter<ColorTableViewHolder>{
     private int selectedPosition;
-
-
     @Override
     public ColorTableViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 

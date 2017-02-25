@@ -51,7 +51,7 @@ public class DBContext {
         String id = newTask.getId();
         for (Task t : tasks
                 ) {
-            if (t.getId() == id) {
+            if (t.getId().equals(id)) {
                 t.setName(newTask.getName());
                 t.setColor(newTask.getColor());
                 t.setDone(newTask.isDone());
@@ -61,7 +61,6 @@ public class DBContext {
                 Log.d(TAG, String.format("onOptionsItemSelected: %s ", t.toString()));
                 break;
             }
-
         }
     }
 
