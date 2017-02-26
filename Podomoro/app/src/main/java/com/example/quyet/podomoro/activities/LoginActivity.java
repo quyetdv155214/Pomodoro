@@ -19,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.quyet.podomoro.R;
-import com.example.quyet.podomoro.databases.TaskContext;
+import com.example.quyet.podomoro.databases.TaskManager;
 import com.example.quyet.podomoro.networks.NetContext;
 import com.example.quyet.podomoro.networks.jsonmodel.LoginBodyJson;
 import com.example.quyet.podomoro.networks.jsonmodel.LoginResponseJson;
@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         addListener();
         setupUI();
         SharedPrefs.init(this);
-//        skipLoginIfPossible();
+        skipLoginIfPossible();
         etUsername.requestFocus();
 
     }
@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
     private void skipLoginIfPossible() {
         if (SharedPrefs.instance.getAccessToken() != null) {
             Log.d(TAG, String.format("accessToken %s", accessToken));
-            TaskContext.instance.getTaskFromServer();
+//            TaskManager.instance.getTaskFromServer();
             gotoTaskActivity();
         }
     }
@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
         //
         Toast.makeText(this, Constant.LOGIN_SUCCESS_MESS, Toast.LENGTH_SHORT).show();
         //
-        TaskContext.instance.getTaskFromServer();
+//        TaskManager.instance.getTaskFromServer();
 
         gotoTaskActivity();
     }

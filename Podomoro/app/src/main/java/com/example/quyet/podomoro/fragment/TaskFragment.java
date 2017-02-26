@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.example.quyet.podomoro.R;
 import com.example.quyet.podomoro.adapters.TaskAdapter;
 import com.example.quyet.podomoro.databases.DBContext;
-import com.example.quyet.podomoro.databases.TaskContext;
+import com.example.quyet.podomoro.databases.TaskManager;
 import com.example.quyet.podomoro.databases.models.Task;
 import com.example.quyet.podomoro.ultil.Constant;
 
@@ -50,7 +50,6 @@ public class TaskFragment extends Fragment {
         super.onAttach(context);
         taskFragmentListener = (TaskFragmentListener) context;
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,13 +66,13 @@ public class TaskFragment extends Fragment {
         ButterKnife.bind(this, view);
         //
         taskAdapter = new TaskAdapter();
-        TaskContext.instance.getTaskFromServer();
 
         rvTask.setAdapter(taskAdapter);
         rvTask.setLayoutManager(new LinearLayoutManager(this.getContext()));
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.tasks);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL);
         rvTask.addItemDecoration(dividerItemDecoration);
+//        TaskManager.instance.getTaskFromServer();
         taskAdapter.notifyDataSetChanged();
         taskAdapter.setTaskLongClickListener(new TaskAdapter.TaskLongClickListener() {
             @Override
@@ -89,7 +88,7 @@ public class TaskFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         DBContext.instance.deleteTask(task);
                         if (task.getLocal_id() != null)
-                        TaskContext.instance.deleteTask(task);
+                        TaskManager.instance.deleteTask(task);
                         else{
                             Toast.makeText(getContext(), Constant.EXCEPTION_TASK_HAVE_NULL_LOCAL_ID, Toast.LENGTH_SHORT).show();
                         }

@@ -16,7 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import com.example.quyet.podomoro.R;
-import com.example.quyet.podomoro.databases.TaskContext;
+import com.example.quyet.podomoro.databases.TaskManager;
+import com.example.quyet.podomoro.fragment.LoadingFragment;
 import com.example.quyet.podomoro.fragment.TaskFragment;
 import com.example.quyet.podomoro.fragment.TaskFragmentListener;
 import butterknife.ButterKnife;
@@ -28,6 +29,7 @@ public class TaskActivity extends AppCompatActivity
     private static final String TAG = "task activity";
     ActionBarDrawerToggle toggle;
     ProgressDialog myDialog;
+    LoadingFragment loadingFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,31 +73,23 @@ public class TaskActivity extends AppCompatActivity
         });
         setupUI();
         // change fragment
+        loadingFragment= new LoadingFragment();
          taskFragment = new TaskFragment();
-        onChangeFragment(taskFragment, false);
-//        setupUI();
+        onChangeFragment(loadingFragment, false);
+
     }
     public static TaskFragment getTaskFragment(){
         return taskFragment;
     }
 
     public void setupUI(){
-//        myDialog = new ProgressDialog(this);
-//        myDialog.setMessage("Load Data...");
-//        myDialog.setCancelable(false);
-//        myDialog.onStart();
-//        boolean taskFromServer = TaskContext.instance.getTaskFromServer();
-//        if (taskFromServer == true){
-//            myDialog.dismiss();
-//        }
-
+//        TaskManager.instance.getTaskFromServer();
 
     }
 
     @Override
     public void onBackPressed() {
         super.onRestart();
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -163,7 +157,6 @@ public class TaskActivity extends AppCompatActivity
         }
 
     }
-
     private void gotoColorActivity() {
         Intent intent = new Intent(this, ColorActivity.class);
         this.startActivity(intent);

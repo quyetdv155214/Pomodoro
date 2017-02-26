@@ -1,7 +1,9 @@
 package com.example.quyet.podomoro.fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -24,7 +26,7 @@ import com.example.quyet.podomoro.activities.TaskActivity;
 import com.example.quyet.podomoro.adapters.TaskAdapter;
 import com.example.quyet.podomoro.adapters.TaskColorAdapter;
 import com.example.quyet.podomoro.databases.DBContext;
-import com.example.quyet.podomoro.databases.TaskContext;
+import com.example.quyet.podomoro.databases.TaskManager;
 import com.example.quyet.podomoro.databases.models.Task;
 import com.example.quyet.podomoro.decoration.TaskColorDecor;
 
@@ -153,21 +155,47 @@ public class TaskDetailFragment extends Fragment {
             Log.d(TAG, String.format("onOptionsItemSelected: %s", isDone));
             Toast.makeText(this.getContext(), R.string.saved, Toast.LENGTH_SHORT).show();
             // 2 : Create new Task
-            Task newTask = new Task(taskName, color, paymentPerHour, isDone, "", "");
+             Task newTask = new Task(taskName, color, paymentPerHour, isDone, "", "");
+
+
 
             if (task == null) {
                 // 3 : add to database
                 DBContext.instance.addTask(newTask);
-                TaskContext.instance.addNewTask(newTask);
+                TaskManager.instance.addNewTask(newTask);
+                getActivity().onBackPressed();
+
             } else {
+                final ProgressDialog myDialog = new ProgressDialog(this.getActivity());
+                myDialog.setMessage("Waitting...");
+                myDialog.setCancelable(false);
+                myDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        getActivity().onBackPressed();
+                    }
+                });
+                myDialog.show();
+
+                Task temp = newTask;
                 newTask.setLocal_id(task.getLocal_id());
                 newTask.setId(task.getId());
                 DBContext.instance.editTask(newTask);
-                TaskContext.instance.editTask(newTask);
-//                getActivity().onBackPressed();
+                TaskManager.instance.editTask(newTask);
+                TaskManager.instance.setEditTaskListener(new TaskManager.EditTaskListener() {
+                    @Override
+                    public void onEditTask(boolean ok) {
+                        if(ok){
+                            myDialog.dismiss();
+                            getActivity().onBackPressed();
+                        }
+
+
+                    }
+                });
 
             }
-            getActivity().onBackPressed();
         }
 
 //        taskFragmentListener.onChangeFragment(new TaskFragment(), false);
