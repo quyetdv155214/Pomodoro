@@ -2,20 +2,26 @@ package com.example.quyet.podomoro.databases.models;
 
 import com.example.quyet.podomoro.ultil.Utils;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by quyet on 2/8/2017.
  */
 
-public class Task {
+public class Task  extends RealmObject{
+    @PrimaryKey
+    private String local_id;
     private String name;
     private String color;
     private double payment_per_hour;
     private boolean isDone;
     private String id;
-    private String local_id;
+
     private String due_date;
 
-
+    public Task() {
+    }
 
     public Task(String name, String color, double payment_per_hour, boolean isDone, String id, String local_id, String due_date) {
         this.name = name;

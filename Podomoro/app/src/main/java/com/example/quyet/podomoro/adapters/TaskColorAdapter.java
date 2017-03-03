@@ -67,7 +67,7 @@ public class TaskColorAdapter extends RecyclerView.Adapter<ColorTableViewHolder>
     public void setSelectedColor(String color)
     {
         selectedPosition = 0;
-        for (int colorIndex =0; colorIndex <Color.COLORS.length; colorIndex++)
+        for (int colorIndex =0; colorIndex < Color.COLORS.length; colorIndex++)
         {
             if (Color.COLORS[colorIndex].equalsIgnoreCase(color)){
                 selectedPosition = colorIndex;
